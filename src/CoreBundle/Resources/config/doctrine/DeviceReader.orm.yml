@@ -1,0 +1,110 @@
+CoreBundle\Entity\DeviceReader:
+    repositoryClass: CoreBundle\Entity\DeviceReaderRepository
+    type: entity
+    table: device_reader
+
+    indexes:
+        device_reader_type_reader_id_fk:
+            columns:
+                - type_reader_id
+        device_reader_section_id_fk:
+            columns:
+                - section_id
+
+    uniqueConstraints:
+        deviceReader_dre_uuid_uindex:
+            columns:
+                - dre_uuid
+
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            column: id
+            generator:
+                strategy: IDENTITY
+    fields:
+        typeReaderId:
+            type: integer
+            nullable: false
+            length: 11
+            column: type_reader_id
+            options:
+                unsigned: true
+        sectionId:
+            type: integer
+            nullable: false
+            length: 11
+            column: section_id
+            options:
+                unsigned: true
+        name:
+            type: string
+            nullable: false
+            length: 100
+            column: dre_name
+        uuid:
+            type: guid
+            nullable: false
+            length: 64
+            column: dre_uuid
+            unique: true
+        note:
+            type: string
+            nullable: true
+            length: 100
+            column: dre_note
+        token:
+            type: string
+            nullable: true
+            length: 100
+            column: dre_token
+        ipAddress:
+            type: string
+            nullable: true
+            length: 100
+            column: dre_ip_address
+        portNumber:
+            type: string
+            nullable: true
+            length: 100
+            column: dre_port_number
+        lastSyncAt:
+            type: datetime
+            nullable: true
+            column: dre_last_sync_at
+        createdAt:
+            type: datetime
+            nullable: false
+            options:
+                default: CURRENT_TIMESTAMP
+            column: dre_created_at
+        updatedAt:
+            type: datetime
+            nullable: false
+            options:
+                default: CURRENT_TIMESTAMP
+            column: dre_updated_at
+
+    manyToOne:
+      typeReader:
+        targetEntity: CoreBundle\Entity\TypeReader
+        inversedBy: deviceReaders
+        joinColumn:
+          name: type_reader_id
+          referencedColumnName: id
+      section:
+        targetEntity: CoreBundle\Entity\Section
+        inversedBy: deviceReaders
+        joinColumn:
+          name: section_id
+          referencedColumnName: id
+
+    oneToMany:
+      logs:
+        targetEntity: CoreBundle\Entity\Log
+        mappedBy: deviceReader
+        cascade: ['persist', 'remove']

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    {{ include('@Interface/_layout/skeleton.html.twig') }}
+
+    <style>
+
+        .pad{
+            padding: 10px;
+        }
+
+
+    </style>
+
+</head>
+
+<body>
+
+    {{ include('@Interface/_layout/navbar.html.twig') }}
+
+    <div class="col-md-1 pad ">
+
+        <div class="btn-group-vertical">
+            <a class="btn btn-default glyphicon glyphicon-hand-left" style="margin-bottom: 20%" href="{{ path('viewUser', {'id_user':  id_user}) }}" > Späť</a>
+        </div>
+
+    </div>
+
+    <div class="col-md-4 col-md-offset-1">
+        {{ form_start(form) }}
+        {{ form_end(form) }}
+    </div>
+
+</body>

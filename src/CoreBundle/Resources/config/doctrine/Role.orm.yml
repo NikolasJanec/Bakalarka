@@ -1,0 +1,47 @@
+CoreBundle\Entity\Role:
+    type: entity
+    table: role
+
+    uniqueConstraints:
+        role_rol_code_uindex:
+            columns:
+                - rol_code
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            column: id
+            generator:
+                strategy: IDENTITY
+    fields:
+        code:
+            type: string
+            nullable: false
+            length: 100
+            column: rol_code
+        description:
+            type: string
+            nullable: true
+            length: 100
+            column: rol_description
+        createdAt:
+            type: datetime
+            nullable: false
+            options:
+                default: CURRENT_TIMESTAMP
+            column: rol_created_at
+        updatedAt:
+            type: datetime
+            nullable: false
+            options:
+                default: CURRENT_TIMESTAMP
+            column: rol_updated_at
+
+    oneToMany:
+      users:
+        targetEntity: CoreBundle\Entity\User
+        mappedBy: role
+        cascade: ['persist', 'remove']

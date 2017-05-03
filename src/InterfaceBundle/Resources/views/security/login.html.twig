@@ -1,0 +1,58 @@
+{# app/Resources/views/security/login.html.twig #}
+{# ... you will probably extend your base template, like base.html.twig #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Signin Template for Bootstrap</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <style>
+        .center_div{
+            margin: 20%;
+        }
+    </style>
+</head>
+<body>
+
+{% if error %}
+    <div class="alert alert-danger" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+{% endif %}
+
+
+<form action="{{ path('login') }}" method="post" class="form-horizontal col-md-offset-4 center_div">
+    <div class="form-group">
+        <label for="username" class="control-label col-sm-2">Username:</label>
+        <div class="input-group col-sm-3">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+            <input type="text" class="form-control" id="username" name="_username" value="{{ last_username }}" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="password" class="control-label col-sm-2">Password:</label>
+        <div class="input-group col-sm-3">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+            <input type="password" class="form-control" id="password" name="_password" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 " >
+            <button class="btn btn-primary " type="submit">login</button>
+        </div>
+    </div>
+
+</form>
+</body>
+</html>

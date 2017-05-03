@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    {{ include('@Interface/_layout/skeleton.html.twig') }}
+
+    <style>
+        .pad{
+            padding: 10px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+{{ include('@Interface/_layout/navbar.html.twig') }}
+
+<div class="col-md-1 pad ">
+
+    <div class="btn-group-vertical">
+        <a class="btn btn-default glyphicon glyphicon-hand-left" style="margin-bottom: 20%" href="{{ relative_path('/sections') }}" > Späť</a>
+    </div>
+
+</div>
+
+<div class="input-group col-md-5 col-md-offset-1 pad">
+    <form method="post">
+
+        <div class="form-group">
+            <label for="name" class="control-label">Meno sekcie:</label>
+            <input type="text" class="form-control" id="name" name="name" />
+        </div>
+
+        <div class="form-group">
+
+                <button class="btn btn-primary " type="submit">Vytvoriť</button>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+
+</body>

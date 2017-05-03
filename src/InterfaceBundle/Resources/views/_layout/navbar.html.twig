@@ -1,0 +1,17 @@
+
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav">
+            <li><a href="{{ relative_path('/dashboard')}}">Users</a></li>
+            <li><a href="{{ relative_path('/readers')}}">NFC Readers</a></li>
+            <li><a href="{{ relative_path('/logs')}}">Logs</a></li>
+            <li><a href="{{ relative_path('/registration')}}">Registration</a></li>
+            <li><a href="{{ relative_path('/sections') }}">Sections</a></li>
+            {#class="active"#}
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="{{ relative_path('/logout') }}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+        </ul>
+    </div>
+</nav>

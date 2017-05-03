@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    {{ include('@Interface/_layout/skeleton.html.twig') }}
+
+    <style>
+
+        .pad{
+            padding: 10px;
+        }
+
+
+    </style>
+
+</head>
+
+<body>
+
+{{ include('@Interface/_layout/navbar.html.twig') }}
+
+{{ include('@Interface/Users/user.html.twig') }}
+
+
+<div class="col-md-3 col-md-offset-1 pad">
+
+</div>
+<div class="col-md-10 col-md-offset-1 pad">
+    <div class="col-md-5 pad">
+
+        <table class="table table-hover table-striped">
+            <tr>
+                <th>Sekcia</th>
+                <th>Akcia</th>
+            </tr>
+
+
+            {% for section in sections %}
+
+                <tr>
+                    <td>{{ section.name }}</td>
+                    <td> <a class="btn btn-default btn-xs" href="{{ path('addUserSections', {'id_user': user.id, 'id_section': section.id, 'id_profile': 0, 'id_action': 0}) }}" >Vybrať</a> </td>
+
+                    {#<td>#}
+                    {#<a class="btn btn-default btn-xs" href="#" >Zobraziť</a>#}
+                    {#<a class="btn btn-default btn-xs" href="{{ path('deleteAdministratorFromSection', {'id':  id_section, 'id_user':  user.id}) }}" >Odstrániť</a>#}
+                    {#</td>#}
+                </tr>
+
+            {% endfor %}
+        </table>
+
+    </div>
+    <div class="col-md-5 pad">
+
+        <table class="table table-hover table-striped">
+            <tr>
+                <th>Časový profil</th>
+                <th>Pridať</th>
+            </tr>
+
+                {% if specific_section != 0 and specific_profile == 0 %}
+                    <tr>
+                            <td>Bez časového profilu</td>
+                            <td> <a class="btn btn-default btn-xs" href="{{ path('addUserSections', {'id_user': user.id, 'id_section': specific_section, 'id_profile': 0, 'id_action': 1}) }}" >Priradiť</a> </td>
+                    </tr>
+                {% endif %}
+                {% for profile in profiles %}
+                    <tr>
+
+                        <td>{{ profile.name }}</td>
+                        <td> <a class="btn btn-default btn-xs" href="{{ path('addUserSections', {'id_user': user.id, 'id_section': specific_section, 'id_profile': profile.id, 'id_action': 1}) }}" >Priradiť</a> </td>
+
+                        {#<td>#}
+                        {#<a class="btn btn-default btn-xs" href="#" >Zobraziť</a>#}
+                        {#<a class="btn btn-default btn-xs" href="{{ path('deleteAdministratorFromSection', {'id':  id_section, 'id_user':  user.id}) }}" >Odstrániť</a>#}
+                        {#</td>#}
+                     </tr>
+
+                {% endfor %}
+
+
+        </table>
+
+    </div>
+</div>
+</body>

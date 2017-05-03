@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    {{ include('@Interface/_layout/skeleton.html.twig') }}
+
+    <style>
+
+        .pad{
+            padding: 10px;
+        }
+
+
+    </style>
+
+</head>
+
+<body>
+
+{% if pom_error != 0 %}
+    <p>hdjhsjkljnsldhlj</p>
+    <div class="alert alert-danger" role="alert">pom_error</div>
+{% endif %}
+
+{{ include('@Interface/_layout/navbar.html.twig') }}
+
+<div class="col-md-1 pad ">
+
+    <div class="btn-group-vertical">
+        <a class="btn btn-default glyphicon glyphicon-hand-left" style="margin-bottom: 20%" href="{{ relative_path('/readers') }}" > Späť</a>
+        {% if deviceReader.typeReader.code == "HYBRID" %}
+        <a class="btn btn-default " style="margin-bottom: 20%" href="{{ path('updateDeviceReader', {'id_reader':  deviceReader.id})}}" > Aktualizovať</a>
+        {% elseif deviceReader.typeReader.code == "OFFLINE" %}
+            <a class="btn btn-default" href="{{ path('updateOfflineReader', {'id_reader':  deviceReader.id})}}" >Generovať súbor</a>
+        {% endif %}
+    </div>
+
+</div>
+
+<div class="col-md-3 pad">
+
+    <div class=" pad">
+        <label>Názov:</label>
+        <h4>{{ deviceReader.name }}</h4>
+    </div>
+
+    <div class="pad" >
+        <label>Poznámka:</label>
+        <h4>{{ deviceReader.note }}</h4>
+    </div>
+
+    <div class="pad" >
+        <label>Ip adresa:</label>
+        <h4>{{ deviceReader.ipAddress }}</h4>
+    </div>
+
+</div>
+
+<div class="col-md-10 col-md-offset-1 pad">
+    <table class="table table-hover table-striped">
+        <tr>
+            <th>Užívateľ</th>
+            <th>Sekcia</th>
+            <th>Status</th>
+            <th>Dátum</th>
+        </tr>
+
+        {% for log in deviceReader.logs %}
+            {% if log.activity == "Prístup" %}
+                <tr>
+                    <td>{{ log.user.username }}</td>
+                    <td>{{ log.section.name }}</td>
+                    <td>{{ log.status }}</td>
+                    <td>{{ log.createdAt2 }}</td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+</div>
+
+</body>

@@ -1,0 +1,145 @@
+CoreBundle\Entity\Log:
+    type: entity
+    table: log
+    indexes:
+        log_device_reader_id_fk:
+            columns:
+                - device_reader_id
+        log_user_id_fk:
+            columns:
+                - user_id
+        log_administrator_id_fk:
+            columns:
+                - administrator_id
+        log_device_id_fk:
+            columns:
+                - device_id
+        log_entry_id_fk:
+            columns:
+                - entry_id
+        log_section_id_fk:
+            columns:
+                - section_id
+
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            column: id
+            generator:
+                strategy: IDENTITY
+    fields:
+        deviceReaderId:
+            type: integer
+            nullable: true
+            length: 11
+            column: device_reader_id
+            options:
+                unsigned: true
+        userId:
+            type: integer
+            nullable: true
+            length: 11
+            column: user_id
+            options:
+                unsigned: true
+        administratorId:
+            type: integer
+            nullable: true
+            length: 11
+            column: administrator_id
+            options:
+                unsigned: true
+        entryId:
+            type: integer
+            nullable: true
+            length: 11
+            column: entry_id
+            options:
+                unsigned: true
+        sectionId:
+            type: integer
+            nullable: true
+            length: 11
+            column: section_id
+            options:
+                unsigned: true
+        deviceId:
+            type: integer
+            nullable: true
+            length: 11
+            column: device_id
+            options:
+                unsigned: true
+        status:
+            type: string
+            nullable: false
+            length: 100
+            column: log_status
+        activity:
+            type: string
+            nullable: true
+            length: 100
+            column: log_activity
+        message:
+            type: string
+            nullable: true
+            length: 100
+            column: log_message
+        additionalInfo:
+            type: string
+            nullable: true
+            length: 100
+            column: log_additional_info
+        createdAt:
+            type: datetime
+            nullable: false
+            options:
+                default: CURRENT_TIMESTAMP
+            column: log_created_at
+        updatedAt:
+            type: datetime
+            nullable: false
+            options:
+                default: CURRENT_TIMESTAMP
+            column: log_updated_at
+    manyToOne:
+      deviceReader:
+        targetEntity: CoreBundle\Entity\DeviceReader
+        inversedBy: logs
+        joinColumn:
+          name: device_reader_id
+          referencedColumnName: id
+      user:
+        targetEntity: CoreBundle\Entity\User
+        inversedBy: logs
+        joinColumn:
+          name: user_id
+          referencedColumnName: id
+      administrator:
+        targetEntity: CoreBundle\Entity\User
+        inversedBy: logsAdministrator
+        joinColumn:
+          name: administrator_id
+          referencedColumnName: id
+      device:
+        targetEntity: CoreBundle\Entity\Device
+        inversedBy: logs
+        joinColumn:
+          name: device_id
+          referencedColumnName: id
+      entry:
+        targetEntity: CoreBundle\Entity\Entry
+        inversedBy: logs
+        joinColumn:
+          name: entry_id
+          referencedColumnName: id
+      section:
+        targetEntity: CoreBundle\Entity\Section
+        inversedBy: logs
+        joinColumn:
+          name: section_id
+          referencedColumnName: id

@@ -1,0 +1,23 @@
+<div class="col-md-3 pad">
+
+    <div class=" pad">
+        <label>Meno:</label>
+        <h4>{{ user.firstName }}</h4>
+    </div>
+
+    <div class="pad" >
+        <label>Priezvisko:</label>
+        <h4>{{ user.lastName }}</h4>
+    </div>
+
+    <div class="pad" >
+        <label>Username:</label>
+        <h4>{{ user.userName }}</h4>
+    </div>
+</div>
+
+<div class="col-md-3 col-md-offset-1 pad">
+    <a class="btn btn-default " href="{{ path('viewUserEntries', {'id_user': user.id}) }}" >Prístupy</a>
+    <a class="btn btn-default " href="{{ path('viewUserSections', {'id_user': user.id}) }}" >Sekcie</a>
+    <a class="btn btn-default " href="{{ path('viewUserTimeEntries', {'id_user': user.id, 'id_section': 0}) }}" >Nastavenia časových prístupov</a>
+</div>

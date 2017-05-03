@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    {{ include('@Interface/_layout/skeleton.html.twig') }}
+
+    <style>
+
+        .pad{
+            padding: 10px;
+        }
+
+
+    </style>
+
+</head>
+
+<body>
+
+{{ include('@Interface/_layout/navbar.html.twig') }}
+
+<div class="col-md-1 pad ">
+
+    <div class="btn-group-vertical">
+        <a class="btn btn-default glyphicon glyphicon-hand-left" style="margin-bottom: 20%" href="{{ relative_path('/dashboard') }}" > Späť</a>
+    </div>
+
+    <div class="btn-group-vertical">
+        <a class="btn btn-default glyphicon glyphicon-plus"  href="{{ path('addUserSections', {'id_user': user.id, 'id_section': 0, 'id_profile': 0, 'id_action': 0}) }}" > Sekcia</a>
+    </div>
+
+</div>
+
+
+{{ include('@Interface/Users/user.html.twig') }}
+
+
+
+
+<div class="col-md-10 col-md-offset-1 pad">
+
+        <table class="table table-hover table-striped">
+            <tr>
+                <th>Sekcia</th>
+                <th>Časový profil</th>
+                <th>Akcia</th>
+            </tr>
+
+
+            {% for section in sections %}
+
+                <tr>
+                    <td>{{ section['section_name'] }}</td>
+                    <td>{{ section['profile_name'] }}</td>
+                    <td> <a class="btn btn-default btn-xs" href="{{ path('deleteUserSectionAndProfile', {'id_user': user.id, 'id_section': section['section_id'] , 'id_profile':  section['profile_id']  }) }}" >Odstrániť</a> </td>
+
+                    {#<td>#}
+                    {#<a class="btn btn-default btn-xs" href="#" >Zobraziť</a>#}
+                    {#<a class="btn btn-default btn-xs" href="{{ path('deleteAdministratorFromSection', {'id':  id_section, 'id_user':  user.id}) }}" >Odstrániť</a>#}
+                    {#</td>#}
+                </tr>
+
+            {% endfor %}
+        </table>
+
+    </div>
+
+</body>

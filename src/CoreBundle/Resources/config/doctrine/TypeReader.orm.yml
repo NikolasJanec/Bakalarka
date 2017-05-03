@@ -1,0 +1,47 @@
+CoreBundle\Entity\TypeReader:
+    type: entity
+    table: type_reader
+
+    uniqueConstraints:
+        type_reader_tre_code_uindex:
+            columns:
+                - tre_code
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            column: id
+            generator:
+                strategy: IDENTITY
+    fields:
+        code:
+            type: string
+            nullable: false
+            length: 100
+            column: tre_code
+        description:
+            type: string
+            nullable: true
+            length: 100
+            column: tre_description
+        createdAt:
+            type: datetime
+            nullable: false
+            options:
+                default: CURRENT_TIMESTAMP
+            column: tre_created_at
+        updatedAt:
+            type: datetime
+            nullable: false
+            options:
+                default: CURRENT_TIMESTAMP
+            column: tre_updated_at
+
+    oneToMany:
+      deviceReaders:
+        targetEntity: CoreBundle\Entity\DeviceReader
+        mappedBy: typeReader
+        cascade: ['persist', 'remove']

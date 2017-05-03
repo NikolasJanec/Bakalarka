@@ -1,0 +1,203 @@
+
+{%
+form_theme form
+'bootstrap_3_layout.html.twig'
+%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{{ include('@Interface/_layout/skeleton.html.twig') }}
+</head>
+
+<body>
+
+    {{ include('@Interface/_layout/navbar.html.twig') }}
+
+    {#<form method="post" class="form-horizontal ">#}
+        {#<div class="form-group">#}
+            {#<label for="firstname" class="control-label col-sm-2">Meno:</label>#}
+            {#<div class="input-group col-sm-3">#}
+                {#<input type="text" class="form-control" id="firstname" name="_firstname" />#}
+            {#</div>#}
+        {#</div>#}
+
+        {#<div class="form-group">#}
+            {#<label for="lastname" class="control-label col-sm-2">Priezvisko:</label>#}
+            {#<div class="input-group col-sm-3">#}
+                {#<input type="text" class="form-control" id="lastname" name="_lastname" />#}
+            {#</div>#}
+        {#</div>#}
+
+        {#<div class="form-group">#}
+            {#<label for="username" class="control-label col-sm-2">Username:</label>#}
+            {#<div class="input-group col-sm-3">#}
+                {#<input type="text" class="form-control" id="username" name="_username" />#}
+            {#</div>#}
+        {#</div>#}
+
+        {#<div class="form-group">#}
+            {#<div class="col-sm-offset-2 " >#}
+                {#<button class="btn btn-primary " type="submit">Registrovať</button>#}
+            {#</div>#}
+        {#</div>#}
+    {#</form>#}
+
+    <div class="row">
+        <div class="col-lg-6 col-lg-offset-3">
+
+            {#{{ form(form) }}#}
+
+            {{ form_start(form) }}
+            {# render the task's only field: description #}
+            {#{{ form_row(form.description) }}#}
+
+
+
+
+
+            {#{{ form(form) }}#}
+
+            {#<ul class="entrys" data-prototype="{{ form_widget(form.entrys.vars.prototype)|e('html_attr') }}">#}
+                {# iterate over each existing tag and render its only field: name #}
+                {#{% for tag in form.entrys %}#}
+                    {#<li>{{ form_row(form.entrys) }}</li>#}
+                {#{% endfor %}#}
+            {#</ul>#}
+
+
+
+            {{ form_end(form) }}
+
+            <script>
+                var $form = $("form");
+                var selection = $("#registration_sections");
+                $profiles = "<div id='profiles' class='form-group'></div>";
+
+
+                $("#registration_save").parent().before($profiles);
+
+                $("#registration_save").click(function(e){
+                    e.preventDefault();
+
+                    var obj = {}
+                    obj["username"] = $("#registration_userName").val();
+                    obj["last_name"] = $("#registration_lastName").val();
+                    obj["first_name"] = $("#registration_firstName").val();
+                    obj["section"] = $("#registration_sections option:selected").text();
+                    obj["profile"] = $("#profile_selection option:selected").val();
+
+                    var data = JSON.stringify(obj);
+                    $.ajax
+                    ({
+                        url: "https://bakalarka.server.dev/registration/register",
+                        type: $form.attr('method'),
+                        data: data,
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function(response)
+                        {
+
+                            alert(JSON.stringify(response));
+
+                        }
+                    });
+
+                });
+
+                $(selection).change(function(){
+
+                    var section_name  = $(this).val();
+
+
+                    var obj = {name : section_name};
+
+                    var data = JSON.stringify(obj);
+
+                    $.ajax({
+                        url : "https://bakalarka.server.dev/registration/profiles",
+                        type: $form.attr('method'),
+                        data : data,
+                        dataType : "json",
+                        contentType: "application/json; charset=utf-8",
+
+                        success: function(response) {
+                            var selectValues = response['data'];
+
+                            var label = '<label class="control-label required" for="profile_selection">Profiles</label>';
+                            var select = "<select id='profile_selection' class='form-control'></select>";
+                            var choice = $(select);
+                            var choice_label = $(label);
+
+                            $.each(selectValues, function(key, value) {
+                                $(choice)
+                                    .append($("<option></option>")
+                                        .attr("value",value['id'])
+                                        .text(value['name']));
+                            });
+
+                            $("#profiles").html(choice_label).append(choice);
+                        }
+                    });
+
+                });
+
+
+
+
+            </script>
+            {#<script>#}
+
+                {#var $collectionHolder;#}
+
+                {#// setup an "add a tag" link#}
+                {#var $addTagLink = $('<a href="#" class="add_tag_link">Pridaj povolenie</a>');#}
+                {#var $newLinkLi = $('<li></li>').append($addTagLink);#}
+
+                {#jQuery(document).ready(function() {#}
+                    {#// Get the ul that holds the collection of tags#}
+                    {#$collectionHolder = $('ul.entrys');#}
+
+                    {#// add the "add a tag" anchor and li to the tags ul#}
+                    {#//$collectionHolder.append($newLinkLi);#}
+                    {#// count the current form inputs we have (e.g. 2), use that as the new#}
+                    {#// index when inserting a new item (e.g. 2)#}
+                    {#$collectionHolder.data('index', $collectionHolder.find(':input').length);#}
+
+                    {#$addTagLink.on('click', function(e) {#}
+                        {#// prevent the link from creating a "#" on the URL#}
+                        {#e.preventDefault();#}
+
+                        {#// add a new tag form (see next code block)#}
+                        {#addTagForm($collectionHolder, $newLinkLi);#}
+                    {#});#}
+                {#});#}
+
+                {#function addTagForm($collectionHolder, $newLinkLi) {#}
+                    {#// Get the data-prototype explained earlier#}
+                    {#var prototype = $collectionHolder.data('prototype');#}
+
+                    {#// get the new index#}
+                    {#var index = $collectionHolder.data('index');#}
+
+                    {#// Replace '__name__' in the prototype's HTML to#}
+                    {#// instead be a number based on how many items we have#}
+                    {#// var newForm = prototype.replace(/_from_/g, index);#}
+
+                    {#var newForm = prototype;#}
+
+                    {#// increase the index with one for the next item#}
+                    {#$collectionHolder.data('index', index + 1);#}
+
+                    {#// Display the form in the page in an li, before the "Add a tag" link li#}
+                    {#var $newFormLi = $('<li></li>').append(newForm);#}
+                    {#$newLinkLi.before($newFormLi);#}
+                {#}#}
+
+            {#</script>#}
+
+        </div>
+    </div>
+
+</body>
+
+

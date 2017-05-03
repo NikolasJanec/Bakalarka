@@ -1,0 +1,102 @@
+
+{%
+form_theme form
+'bootstrap_3_layout.html.twig'
+%}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    {{ include('@Interface/_layout/skeleton.html.twig') }}
+
+    <style>
+
+        .pad{
+            padding: 10px;
+        }
+
+
+    </style>
+
+</head>
+
+
+<body>
+
+{{ include('@Interface/_layout/navbar.html.twig') }}
+
+<div class="col-md-1 pad ">
+
+    <div class="btn-group-vertical">
+        <a class="btn btn-default glyphicon glyphicon-hand-left" style="margin-bottom: 20%" href="{{ path('timeProfilesSection', {'id':  id_section}) }}" > Späť</a>
+    </div>
+
+</div>
+
+<div class="col-md-4 col-md-offset-1">
+    {{ form_start(form) }}
+    {{ form_row(form.name) }}
+
+    <div >
+        <ul class="entrys pad" data-prototype="{{ form_widget(form.entrys.vars.prototype)|e('html_attr') }}">
+        </ul>
+    </div>
+    <div class="input-group col-md-10 ">
+    {{ form_row(form.save) }}
+    </div>
+    {{ form_end(form) }}
+
+</div>
+
+<script>
+    var $collectionHolder;
+
+    // setup an "add a tag" link
+    var $addTimeLink = $('<a href="#" class="add_tag_link">Pridaj časové obmedzenie</a>');
+    var $newLinkLi = $('<li></li>').append($addTimeLink);
+
+    jQuery(document).ready(function() {
+        // Get the ul that holds the collection of tags
+        $collectionHolder = $('ul.entrys');
+
+        // add the "add a tag" anchor and li to the tags ul
+        $collectionHolder.append($newLinkLi);
+
+        // count the current form inputs we have (e.g. 2), use that as the new
+        // index when inserting a new item (e.g. 2)
+        $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+        $addTimeLink.on('click', function(e) {
+            // prevent the link from creating a "#" on the URL
+            e.preventDefault();
+
+            // add a new tag form (see next code block)
+            addTagForm($collectionHolder, $newLinkLi);
+        });
+    });
+
+    function addTagForm($collectionHolder, $newLinkLi) {
+        // Get the data-prototype explained earlier
+        var prototype = $collectionHolder.data('prototype');
+
+        // get the new index
+        var index = $collectionHolder.data('index');
+
+        // Replace '__name__' in the prototype's HTML to
+        // instead be a number based on how many items we have
+        var newForm = prototype.replace(/__name__/g, index);
+
+        // increase the index with one for the next item
+        $collectionHolder.data('index', index + 1);
+
+        // Display the form in the page in an li, before the "Add a tag" link li
+        var $newFormLi = $('<li></li>').append(newForm);
+        $newLinkLi.before($newFormLi);
+    }
+</script>
+
+
+
+</body>

@@ -1,0 +1,23 @@
+apiListUsers:
+    path:                       /user
+    defaults:                   { _controller: ApiBundle:User:list }
+    methods:                    [GET]
+
+apiCreateTerminal:
+    path:                       /terminal
+    defaults:                   { _controller: ApiBundle:DeviceReader:create }
+    methods:                    [POST]
+
+apiCreateDevice:
+    path:                       /terminal/{id}/device
+    defaults:                   { _controller: ApiBundle:Device:create }
+    methods:                    [POST]
+    requirements:
+      id:                       \d+
+
+apiCheckEntry:
+    path:                       /terminal/{id}/entry
+    defaults:                   { _controller: ApiBundle:Entry:check }
+    methods:                    [POST]
+    requirements:
+      id:                       \d+

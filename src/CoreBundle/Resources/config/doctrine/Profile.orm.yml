@@ -1,0 +1,63 @@
+CoreBundle\Entity\Profile:
+    repositoryClass: CoreBundle\Entity\ProfileRepository
+    type: entity
+    table: profile
+
+    indexes:
+        profile_section_id_fk:
+            columns:
+                - section_id
+
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            column: id
+            generator:
+                strategy: IDENTITY
+    fields:
+        sectionId:
+            type: integer
+            nullable: false
+            length: 11
+            column: section_id
+            options:
+                unsigned: true
+        name:
+            type: string
+            nullable: false
+            length: 100
+            column: pro_name
+        createdAt:
+            type: datetime
+            nullable: false
+            options:
+                default: CURRENT_TIMESTAMP
+            column: pro_created_at
+        updatedAt:
+            type: datetime
+            nullable: false
+            options:
+                default: CURRENT_TIMESTAMP
+            column: pro_updated_at
+
+    manyToOne:
+      section:
+        targetEntity: CoreBundle\Entity\Section
+        inversedBy: profiles
+        joinColumn:
+          name: section_id
+          referencedColumnName: id
+    oneToMany:
+      entrys:
+        targetEntity: CoreBundle\Entity\Entry
+        mappedBy: profile
+        cascade: ['persist', 'remove']
+
+    manyToMany:
+      users:
+          targetEntity: User
+          mappedBy: profiles

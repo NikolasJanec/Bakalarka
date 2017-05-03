@@ -1,0 +1,65 @@
+CoreBundle\Entity\Section:
+    repositoryClass: CoreBundle\Entity\SectionRepository
+    type: entity
+    table: section
+
+    uniqueConstraints:
+        section_sec_name:
+            columns:
+                - sec_name
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            column: id
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: false
+            length: 100
+            column: sec_name
+        createdAt:
+            type: datetime
+            nullable: false
+            options:
+                default: CURRENT_TIMESTAMP
+            column: dev_created_at
+        updatedAt:
+            type: datetime
+            nullable: false
+            options:
+                default: CURRENT_TIMESTAMP
+            column: dev_updated_at
+
+    oneToMany:
+      logs:
+        targetEntity: CoreBundle\Entity\Log
+        mappedBy: section
+        cascade: ['persist', 'remove']
+
+      deviceReaders:
+        targetEntity: CoreBundle\Entity\DeviceReader
+        mappedBy: section
+        cascade: ['persist', 'remove']
+
+      profiles:
+        targetEntity: CoreBundle\Entity\Profile
+        mappedBy: section
+        cascade: ['persist', 'remove']
+
+      entrys:
+        targetEntity: CoreBundle\Entity\Entry
+        mappedBy: section
+        cascade: ['persist', 'remove']
+
+    manyToMany:
+      users:
+          targetEntity: User
+          mappedBy: sections
+
+

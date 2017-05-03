@@ -1,0 +1,123 @@
+CoreBundle\Entity\User:
+    repositoryClass: CoreBundle\Entity\UserRepository
+    type: entity
+    table: user
+    indexes:
+        user_role_id_fk:
+            columns:
+                - role_id
+    uniqueConstraints:
+        deviceReader_dre_uuid_uindex:
+            columns:
+                - usr_uuid
+
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            column: id
+            generator:
+                strategy: IDENTITY
+    fields:
+        roleId:
+            type: integer
+            nullable: false
+            length: 11
+            column: role_id
+            options:
+                unsigned: true
+        firstName:
+            type: string
+            nullable: false
+            length: 100
+            column: usr_first_name
+        lastName:
+            type: string
+            nullable: false
+            length: 100
+            column: usr_last_name
+        uuid:
+            type: guid
+            nullable: false
+            length: 64
+            column: usr_uuid
+            unique: true
+        email:
+            type: string
+            nullable: true
+            length: 100
+            column: usr_email
+        password:
+            type: string
+            nullable: true
+            length: 100
+            column: usr_password
+        userName:
+            type: string
+            nullable: true
+            length: 100
+            column: usr_user_name
+        createdAt:
+            type: datetime
+            nullable: false
+            options:
+                default: CURRENT_TIMESTAMP
+            column: usr_created_at
+        updatedAt:
+            type: datetime
+            nullable: false
+            options:
+                default: CURRENT_TIMESTAMP
+            column: usr_updated_at
+    manyToOne:
+      role:
+        targetEntity: CoreBundle\Entity\Role
+        inversedBy: users
+        joinColumn:
+          name: role_id
+          referencedColumnName: id
+    oneToMany:
+      logs:
+        targetEntity: CoreBundle\Entity\Log
+        mappedBy: user
+        cascade: ['persist', 'remove']
+      logsAdministrator:
+        targetEntity: CoreBundle\Entity\Log
+        mappedBy: administrator
+        cascade: ['persist', 'remove']
+      devices:
+        targetEntity: CoreBundle\Entity\Device
+        mappedBy: user
+        cascade: ['persist', 'remove']
+      entrys:
+        targetEntity: CoreBundle\Entity\Entry
+        mappedBy: user
+        cascade: ['persist', 'remove']
+
+    manyToMany:
+        sections:
+          targetEntity: CoreBundle\Entity\Section
+          inversedBy: users
+          joinTable:
+              name: user_have_section
+              joinColumns:
+                  id_user:
+                      referencedColumnName: id
+              inverseJoinColumns:
+                  id_section:
+                    referencedColumnName: id
+
+        profiles:
+                  targetEntity: CoreBundle\Entity\Profile
+                  inversedBy: users
+                  joinTable:
+                      name: user_have_profile
+                      joinColumns:
+                          id_user:
+                              referencedColumnName: id
+                      inverseJoinColumns:
+                          id_profile:
+                            referencedColumnName: id

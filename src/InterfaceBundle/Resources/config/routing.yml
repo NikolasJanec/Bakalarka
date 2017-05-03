@@ -1,0 +1,258 @@
+
+start_page:
+    path:       /start
+    defaults: { _controller: "InterfaceBundle:Default:index"}
+
+login:
+    path:       /login
+    defaults: { _controller: "InterfaceBundle:Default:login"}
+
+logout:
+    path:       /logout
+
+dashboard:
+    path:               /dashboard
+    defaults:           { _controller: "InterfaceBundle:Default:index" }
+
+#user:
+#    path:           /user/{id}
+#    defaults:       { _controller: "InterfaceBundle:Default:view"}
+#    requirements:
+#          id:                       \d+
+
+readers:
+    path:         /readers
+    defaults:     { _controller: "InterfaceBundle:DeviceReader:index"}
+
+registration:
+    path:         /registration
+    defaults:     { _controller: "InterfaceBundle:RegistrationUser:registrationUser"}
+
+profiles:
+    path:         /registration/profiles
+    defaults:     { _controller: "InterfaceBundle:RegistrationUser:getProfilesUser"}
+
+register:
+    path:         /registration/register
+    defaults:     { _controller: "InterfaceBundle:RegistrationUser:registerUser"}
+
+
+sections:
+    path:         /sections
+    defaults:     { _controller: "InterfaceBundle:Section:index"}
+
+administratorsSection:
+    path:         /section/{id}/administrators
+    defaults:     { _controller: "InterfaceBundle:Section:viewAdministratorsSection"}
+    requirements:
+          id:                       \d+
+
+addAdministratorSection:
+    path:         /section/{id}/add
+    defaults:     { _controller: "InterfaceBundle:Section:addAdministratorToSection"}
+    requirements:
+          id:                       \d+
+
+addAdministrator:
+    path:         /section/{id}/add/{id_user}
+    defaults:     { _controller: "InterfaceBundle:Section:addAdministrator"}
+    requirements:
+          id:                       \d+
+          id_user:                  \d+
+
+deleteAdministratorFromSection:
+    path:         /section/{id}/delete/{id_user}
+    defaults:     { _controller: "InterfaceBundle:Section:deleteAdministratorfromSection"}
+    requirements:
+          id:                       \d+
+          id_user:                  \d+
+
+createAdministratorSection:
+    path:         /section/{id}/createAdministrator
+    defaults:     { _controller: "InterfaceBundle:Administrator:registrationAdministrator"}
+    requirements:
+          id:                       \d+
+
+readersSection:
+    path:         /section/{id}/readers
+    defaults:     { _controller: "InterfaceBundle:Section:viewNfcReadersInSection"}
+    requirements:
+          id:                       \d+
+
+createReaderSection:
+    path:         /section/{id}/createReader
+    defaults:     { _controller: "InterfaceBundle:NfcReader:createOfflineReaderInSection"}
+    requirements:
+          id:                       \d+
+
+deleteReaderFromSection:
+    path:         /section/{id}/deleteReader/{id_reader}
+    defaults:     { _controller: "InterfaceBundle:Section:deleteReaderfromSection"}
+    requirements:
+          id:                       \d+
+          id_reader:                  \d+
+
+timeProfilesSection:
+    path:         /section/{id}/timeProfiles
+    defaults:     { _controller: "InterfaceBundle:Section:viewProfilesInSection"}
+    requirements:
+          id:                       \d+
+
+createProfileSection:
+    path:         /section/{id}/createTimeProfile
+    defaults:     { _controller: "InterfaceBundle:Profile:createProfileInSection"}
+    requirements:
+          id:                       \d+
+
+deleteProfileFromSection:
+    path:         /section/{id}/deleteProfile/{id_profile}
+    defaults:     { _controller: "InterfaceBundle:Section:deleteProfileFromSection"}
+    requirements:
+          id:                       \d+
+          id_profile:               \d+
+
+viewUsersSection:
+    path:         /section/{id}/users
+    defaults:     { _controller: "InterfaceBundle:Section:viewUsersSection"}
+    requirements:
+          id:                       \d+
+
+createUserSection:
+    path:         /section/{id}/createUser
+    defaults:     { _controller: "InterfaceBundle:User:registrationUser"}
+    requirements:
+          id:                       \d+
+
+viewUser:
+    path:         /user/{id_user}
+    defaults:     { _controller: "InterfaceBundle:User:viewUser"}
+    requirements:
+          id_user:                       \d+
+
+viewUserEntries:
+    path:         /user/{id_user}/entries
+    defaults:     { _controller: "InterfaceBundle:User:viewUserEntries"}
+    requirements:
+          id_user:                       \d+
+
+createSection:
+    path:         /createSection
+    defaults:     { _controller: "InterfaceBundle:Section:createSection"}
+
+viewUserSections:
+    path:         /user/{id_user}/sections
+    defaults:     { _controller: "InterfaceBundle:User:viewUserSections"}
+    requirements:
+          id_user:                       \d+
+
+addUserSections:
+    path:         /user/{id_user}/section/{id_section}/profile/{id_profile}{id_action}
+    defaults:     { _controller: "InterfaceBundle:User:addUserSection"}
+    requirements:
+          id_user:                       \d+
+          id_section:                     \d+
+          id_profile:                     \d+
+          id_action:                      \d+
+
+deleteUserSectionAndProfile:
+    path:         /user/{id_user}/section/{id_section}/profile/{id_profile}
+    defaults:     { _controller: "InterfaceBundle:User:deleteSectionAndProfileFromUser"}
+    requirements:
+          id_user:                       \d+
+          id_section:                     \d+
+          id_profile:                     \d+
+
+
+viewUserTimeEntries:
+    path:         /user/{id_user}/section/{id_section}
+    defaults:     { _controller: "InterfaceBundle:User:viewTimeEntriesForSectionAndUser"}
+    requirements:
+          id_user:                       \d+
+          id_section:                     \d+
+
+addUserTimeEveryEntry:
+    path:         /user/{id_user}/section/{id_section}/addeEntry
+    defaults:     { _controller: "InterfaceBundle:User:addEveryTimeEntryToUser"}
+    requirements:
+          id_user:                       \d+
+          id_section:                     \d+
+
+addUserTimeConcreteEntry:
+    path:         /user/{id_user}/section/{id_section}/addcEntry
+    defaults:     { _controller: "InterfaceBundle:User:addConcreteTimeEntryToUser"}
+    requirements:
+          id_user:                       \d+
+          id_section:                     \d+
+
+deleteUserTimeEntry:
+    path:         /user/{id_user}/section/{id_section}/deleteEntry/{id_entry}
+    defaults:     { _controller: "InterfaceBundle:User:deleteTimeEntry"}
+    requirements:
+          id_user:                       \d+
+          id_section:                     \d+
+          id_entry:                       \d+
+
+viewDeviceReader:
+    path:         /reader/{id_reader}
+    defaults:     { _controller: "InterfaceBundle:DeviceReader:viewNfcReader"}
+    requirements:
+          id_reader:                       \d+
+
+updateDeviceReader:
+    path:         /updatereader/{id_reader}
+    defaults:     { _controller: "InterfaceBundle:DeviceReader:updateNfcReader"}
+    requirements:
+          id_reader:                       \d+
+
+viewSectionUser:
+    path:         /section/{id_section}/user/{id_user}
+    defaults:     { _controller: "InterfaceBundle:User:viewSectionUser"}
+    requirements:
+          id_section:                       \d+
+          id_user:                           \d+
+
+viewLogs:
+    path:         /logs
+    defaults:     { _controller: "InterfaceBundle:Log:viewLogs"}
+
+viewSectionProfile:
+    path:         /section/{id_section}/profile/{id_profile}
+    defaults:     { _controller: "InterfaceBundle:Profile:viewTimeProfile"}
+    requirements:
+          id_section:                       \d+
+          id_profile:                        \d+
+
+addProfileTimeSpecEntry:
+    path:         /section/{id_section}/profile/{id_profile}/adds
+    defaults:     { _controller: "InterfaceBundle:Profile:addProfileTimeSpecEntry"}
+    requirements:
+          id_section:                       \d+
+          id_profile:                        \d+
+
+addProfileTimeEveryEntry:
+    path:         /section/{id_section}/profile/{id_profile}/adde
+    defaults:     { _controller: "InterfaceBundle:Profile:addProfileTimeEveryEntry"}
+    requirements:
+          id_section:                       \d+
+          id_profile:                        \d+
+
+deleteProfileTimeEntry:
+    path:         /section/{id_section}/profile/{id_profile}/delete/{id_entry}
+    defaults:     { _controller: "InterfaceBundle:Profile:addProfileTimeEveryEntry"}
+    requirements:
+          id_section:                       \d+
+          id_profile:                        \d+
+          id_entry:                           \d+
+
+updateOfflineReader:
+    path:         /updatereader/{id_reader}/updateOffline
+    defaults:     { _controller: "InterfaceBundle:DeviceReader:updateOfflineReader"}
+    requirements:
+              id_reader:                       \d+
+
+
+
+
+
+
+

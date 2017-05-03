@@ -1,0 +1,109 @@
+CoreBundle\Entity\Entry:
+    type: entity
+    table: entry
+    indexes:
+        entry_section_id_fk:
+            columns:
+                - section_id
+        entry_user_id_fk:
+            columns:
+                - user_id
+
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            column: id
+            generator:
+                strategy: IDENTITY
+    fields:
+        sectionId:
+            type: integer
+            nullable: false
+            length: 11
+            column: section_id
+            options:
+                unsigned: true
+        userId:
+            type: integer
+            nullable: true
+            length: 11
+            column: user_id
+            options:
+                unsigned: true
+        profileId:
+            type: integer
+            nullable: true
+            length: 11
+            column: profile_id
+            options:
+                unsigned: true
+        dayOfMonth:
+            type: smallint
+            nullable: true
+            column: ent_day_of_month
+        dayOfWeek:
+            type: smallint
+            nullable: true
+            column: ent_day_of_week
+        year:
+            type: smallint
+            nullable: true
+            column: ent_year
+        month:
+            type: smallint
+            nullable: true
+            column: ent_month
+        from:
+            type: time
+            nullable: true
+            column: ent_from
+        until:
+            type: time
+            nullable: true
+            column: ent_until
+        isActive:
+            type: boolean
+            nullable: false
+            column: ent_is_active
+        createdAt:
+            type: datetime
+            nullable: false
+            options:
+                default: CURRENT_TIMESTAMP
+            column: ent_created_at
+        updatedAt:
+            type: datetime
+            nullable: false
+            options:
+                default: CURRENT_TIMESTAMP
+            column: ent_updated_at
+
+    manyToOne:
+      section:
+        targetEntity: CoreBundle\Entity\Section
+        inversedBy: entrys
+        joinColumn:
+          name: section_id
+          referencedColumnName: id
+      user:
+        targetEntity: CoreBundle\Entity\User
+        inversedBy: entrys
+        joinColumn:
+          name: user_id
+          referencedColumnName: id
+      profile:
+        targetEntity: CoreBundle\Entity\Profile
+        inversedBy: entrys
+        joinColumn:
+          name: profile_id
+          referencedColumnName: id
+
+    oneToMany:
+      logs:
+        targetEntity: CoreBundle\Entity\Log
+        mappedBy: entry
+        cascade: ['persist', 'remove']

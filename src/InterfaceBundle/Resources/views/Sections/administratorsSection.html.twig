@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    {{ include('@Interface/_layout/skeleton.html.twig') }}
+
+    <style>
+
+        .pad{
+            padding: 10px;
+        }
+
+
+    </style>
+
+</head>
+
+
+<body>
+
+    {{ include('@Interface/_layout/navbar.html.twig') }}
+
+    <div class="col-md-1 pad ">
+
+        <div class="btn-group-vertical">
+            <a class="btn btn-default glyphicon glyphicon-hand-left" style="margin-bottom: 20%" href="{{ relative_path('/sections') }}" > Späť</a>
+            <a class="btn btn-default glyphicon glyphicon-plus" style="margin-bottom: 20%" href="{{  path('addAdministratorSection', {'id':  id_section}) }}" > Pridať</a>
+            <a class="btn btn-default glyphicon glyphicon-user" style="margin-bottom: 20%" href="{{  path('createAdministratorSection', {'id':  id_section}) }}" > Vytvoriť</a>
+        </div>
+
+    </div>
+
+
+
+
+    <form method="POST">
+        <div class="input-group col-md-10 col-md-offset-1 pad">
+            <input type="text" class="form-control" placeholder="Search" name="query" id="srch-term">
+            <div class="input-group-btn">
+                <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+            </div>
+        </div>
+    </form>
+
+    <div class="col-md-10 ">
+        <table class="table table-hover table-striped">
+            <tr>
+                <th>First_Name</th>
+                <th>Last_Name</th>
+                <th>Username</th>
+                <th>Date_Reg</th>
+                <th>Action</th>
+            </tr>
+
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.firstName }}</td>
+                    <td>{{ user.lastName }}</td>
+                    <td>{{ user.userName }}</td>
+                    <td>{{ user.createdAt2 }}</td>
+                    <td>
+                        <a class="btn btn-default btn-xs" href="#" >Zobraziť</a>
+                        <a class="btn btn-default btn-xs" href="{{ path('deleteAdministratorFromSection', {'id':  id_section, 'id_user':  user.id}) }}" >Odstrániť</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+
+</body>

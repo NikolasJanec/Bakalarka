@@ -1,0 +1,75 @@
+CoreBundle\Entity\Device:
+    type: entity
+    table: device
+    indexes:
+        device_user_id_fk:
+            columns:
+                - user_id
+    uniqueConstraints:
+        device_dev_uuid_uindex:
+            columns:
+                - dev_uuid
+
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            column: id
+            generator:
+                strategy: IDENTITY
+    fields:
+        userId:
+            type: integer
+            nullable: false
+            length: 11
+            column: user_id
+            options:
+                unsigned: true
+        uuid:
+            type: guid
+            nullable: false
+            length: 64
+            column: dev_uuid
+            unique: true
+        name:
+            type: string
+            nullable: false
+            length: 100
+            column: dev_name
+        publicKey:
+            type: string
+            nullable: false
+            length: 1000
+            column: dev_publicKey
+        privateKey:
+            type: string
+            nullable: false
+            length: 1000
+            column: dev_privateKey
+        createdAt:
+            type: datetime
+            nullable: false
+            options:
+                default: CURRENT_TIMESTAMP
+            column: dev_created_at
+        updatedAt:
+            type: datetime
+            nullable: false
+            options:
+                default: CURRENT_TIMESTAMP
+            column: dev_updated_at
+    manyToOne:
+      user:
+        targetEntity: CoreBundle\Entity\User
+        inversedBy: devices
+        joinColumn:
+          name: user_id
+          referencedColumnName: id
+    oneToMany:
+      logs:
+        targetEntity: CoreBundle\Entity\Log
+        mappedBy: device
+        cascade: ['persist', 'remove']

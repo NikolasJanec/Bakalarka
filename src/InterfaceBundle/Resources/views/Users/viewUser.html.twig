@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    {{ include('@Interface/_layout/skeleton.html.twig') }}
+
+    <style>
+
+        .pad{
+            padding: 10px;
+        }
+
+
+    </style>
+
+</head>
+
+<body>
+
+{{ include('@Interface/_layout/navbar.html.twig') }}
+
+<div class="col-md-1 pad ">
+
+    <div class="btn-group-vertical">
+        {% if pom_section == 0 %}
+        <a class="btn btn-default glyphicon glyphicon-hand-left" style="margin-bottom: 20%" href="{{ relative_path('/dashboard') }}" > Späť</a>
+        {% else %}
+        <a class="btn btn-default glyphicon glyphicon-hand-left" style="margin-bottom: 20%" href="{{ path('viewUsersSection', {'id': pom_section}) }}" > Späť</a>
+        {% endif %}
+    </div>
+
+</div>
+
+{{ include('@Interface/Users/user.html.twig') }}
+
+</body>
+
+
+

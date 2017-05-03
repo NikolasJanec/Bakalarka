@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    {{ include('@Interface/_layout/skeleton.html.twig') }}
+
+    <style>
+
+        .pad{
+            padding: 10px;
+        }
+
+
+    </style>
+
+</head>
+
+<body>
+
+{{ include('@Interface/_layout/navbar.html.twig') }}
+
+<div class="col-md-1 pad ">
+
+    <div class="btn-group-vertical">
+        <a class="btn btn-default  glyphicon glyphicon-hand-left" style="margin-bottom: 10%" href="{{ path('timeProfilesSection', {'id':  id_section}) }}" > Späť</a>
+        <a class="btn btn-default  " style="margin-bottom: 10%" href="{{ path('addProfileTimeSpecEntry', {'id_profile': id_profile, 'id_section': id_section}) }}" >Konkrétny prístup</a>
+        <a class="btn btn-default  " style="margin-bottom: 10%" href="{{ path('addProfileTimeEveryEntry', {'id_profile': id_profile, 'id_section': id_section}) }}" >Všeobecný prístup</a>
+    </div>
+
+</div>
+
+
+
+    <div class="col-md-4 col-md-offset-1 pad">
+
+        <table class="table table-hover table-striped">
+            <tr>
+                <th>Dátum</th>
+                <th>Od</th>
+                <th>Do</th>
+                <th>Status</th>
+                <th>Akcia</th>
+            </tr>
+
+
+            {% for entry in spec_entries %}
+                <tr>
+
+                    <td>{{ entry.dayOfMonth }}:{{ entry.month }}:{{ entry.year }}</td>
+                    <td> {{ entry.from2 }}</td>
+                    <td>{{ entry.until2 }}</td>
+                    <td>{{ entry.isActive2 }}</td>
+                    <td> <a class="btn btn-default btn-xs" href="{{ path('deleteProfileTimeEntry', {'id_profile': id_profile, 'id_section': id_section, 'id_entry': entry.id}) }}" >Odstrániť</a> </td>
+
+                </tr>
+
+            {% endfor %}
+
+
+        </table>
+
+    </div>
+
+    <div class="col-md-4 pad">
+
+        <table class="table table-hover table-striped">
+            <tr>
+                <th>Deň</th>
+                <th>Od</th>
+                <th>Do</th>
+                <th>Status</th>
+                <th>Akcia</th>
+            </tr>
+
+
+            {% for entry in eve_entries %}
+                <tr>
+
+                    <td>{{ entry.dayOfWeek2 }} </td>
+                    <td> {{ entry.from2 }}</td>
+                    <td>{{ entry.until2 }}</td>
+                    <td>{{ entry.isActive2 }}</td>
+                    <td> <a class="btn btn-default btn-xs" href="{{ path('deleteProfileTimeEntry', {'id_profile': id_profile, 'id_section': id_section, 'id_entry': entry.id}) }}" >Odstrániť</a> </td>
+
+                </tr>
+
+            {% endfor %}
+
+
+        </table>
+
+    </div>
+</div>
+</body>
