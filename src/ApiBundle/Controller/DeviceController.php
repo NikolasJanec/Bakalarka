@@ -60,16 +60,20 @@ class DeviceController extends Controller
                     'device_private_key' => $device->getPrivateKey()
                 ];
 
-                $process = new Process(sprintf("php %s/../bin/console api:update_terminals %s",$this->get('kernel')->getRootDir(), $device->getUuid()));
-                $process->start();
 
-                while ($process->isRunning())
-                {
+                shell_exec(sprintf("nohup php %s/../bin/console api:update_terminals %s &",$this->get('kernel')->getRootDir(), $device->getUuid()));
 
-                }
 
-                var_dump($process->getOutput());
-                var_dump($process->getErrorOutput());
+
+//                $process->start();
+
+//                while ($process->isRunning())
+//                {
+//
+//                }
+////
+//                var_dump($process->getOutput());
+//                var_dump($process->getErrorOutput());
 
                 return new JsonResponse($result, Response::HTTP_CREATED);
         }

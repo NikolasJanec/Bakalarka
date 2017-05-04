@@ -406,8 +406,6 @@ class UserController extends Controller
 
         ));
 
-
-
     }
 
     public function viewSectionUserAction(Request $request, $id_user, $id_section){
@@ -418,8 +416,57 @@ class UserController extends Controller
             'user' => $user,
             'pom_section' => $id_section
         ));
+    }
+
+
+    public function updateReadersUserAction($id_user, $id_section){
+
+        shell_exec(sprintf("nohup php %s/../bin/console api:update_user %s %s &",$this->get('kernel')->getRootDir(), $id_user, $id_section));
+
+        var_dump($id_section);
+
+        $section = $this->getDoctrine()->getRepository("CoreBundle:Section")->find($id_section);
+        $user = $this->getDoctrine()->getRepository("CoreBundle:User")->find($id_user);
+
+        $user_sections = $user->getSections();
+        $entries = [];
+        $timeEntriesYear = [];
+        $timeEntriesEvery = [];
+
+        if($id_section != 0){
+
+            $entries = $this->getDoctrine()->getRepository("CoreBundle:Entry")->findBy([
+                'userId' => $id_user,
+                'sectionId' => $id_section,
+            ]);
+
+            $i = 0;
+            while (!empty($entries[$i])){
+                if($entries[$i]->getYear() == null){
+                    array_push($timeEntriesEvery, $entries[$i]);
+
+                }else{
+                    array_push($timeEntriesYear, $entries[$i]);
+                }
+                $i ++;
+            }
+
+        }
+
+
+
+        return $this->render('@Interface/Users/viewUserTimeEntries.html.twig', array(
+            'user' => $user,
+            'sections' => $user_sections,
+            'id_section' => $id_section,
+            'spec_entries' => $timeEntriesYear,
+            'eve_entries' => $timeEntriesEvery
+
+        ));
+
 
     }
+
 
 
 

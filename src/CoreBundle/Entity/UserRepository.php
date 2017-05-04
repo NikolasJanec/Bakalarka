@@ -39,7 +39,7 @@ class UserRepository extends EntityRepository
 //        }
             $query->andWhere(" :idRole = user.roleId");
             $query->setParameter(":idRole", $userRoleId);
-            $query->andWhere(" :idSection IN user.sections");
+            $query->andWhere(" :idSection MEMBER OF user.sections");
             $query->setParameter(":idSection", $sectionId);
 
 

@@ -29,42 +29,33 @@ class DefaultController extends Controller
                 $i = 0;
 
 
-//                while (!empty($sections[$i])){
-//                    $data = $this->getDoctrine()->getRepository("CoreBundle:User")->findAllByFilter($filter, $sections[$i]->getId(), $userRole);
-//                    if($i == 0){
-//                        $result = $data;
-//                    }else{
-//                        $a = 0;
-//                        $b = 0;
-//                        $c = true;
-//                        while(!empty($data[$a])){
-//                            while(!empty($result[$b])){
-//                                if($data[$a]->getId() == $result[$b]->getId()){
-//                                    $c = false;
-//                                    break;
-//                                }
-//                                $b++;
-//                            }
-//                            if($c == true){
-//                                array_push($result, $data[$a]);
-//                            }
-//                            $c = true;
-//                            $b = 0;
-//                            $a++;
-//                        }
-//                    }
-//                    $i ++;
-//                }
-            $i = 0;
-            $pole = [];
-            while(!empty($sections[$i])){
-                array_push($pole,$sections[$i]->getId());
-                $i ++;
-            }
+                while (!empty($sections[$i])){
+                    $data = $this->getDoctrine()->getRepository("CoreBundle:User")->findAllByFilter($filter, $sections[$i]->getId(), $userRole);
+                    if($i == 0){
+                        $result = $data;
+                    }else{
+                        $a = 0;
+                        $b = 0;
+                        $c = true;
+                        while(!empty($data[$a])){
+                            while(!empty($result[$b])){
+                                if($data[$a]->getId() == $result[$b]->getId()){
+                                    $c = false;
+                                    break;
+                                }
+                                $b++;
+                            }
+                            if($c == true){
+                                array_push($result, $data[$a]);
+                            }
+                            $c = true;
+                            $b = 0;
+                            $a++;
+                        }
+                    }
+                    $i ++;
+                }
 
-            var_dump($pole);
-
-            $result = $this->getDoctrine()->getRepository("CoreBundle:User")->findAllByFilter($filter, $pole, $userRole);
 
         }
         else
@@ -74,40 +65,33 @@ class DefaultController extends Controller
             $filter = null;
             $data = null;
 
-//            while(!empty($sections[$i])){
-//                $data = $this->getDoctrine()->getRepository("CoreBundle:User")->findAllByFilter($filter, $sections[$i]->getId(), $userRole);
-//                if($i == 0){
-//                    $result = $data;
-//                }else{
-//                    $a = 0;
-//                    $b = 0;
-//                    $c = true;
-//                    while(!empty($data[$a])){
-//                        while(!empty($result[$b])){
-//                            if($data[$a]->getId() == $result[$b]->getId()){
-//                                $c = false;
-//                                break;
-//                            }
-//                            $b++;
-//                        }
-//                        if($c == true){
-//                            array_push($result, $data[$a]);
-//                        }
-//                        $c = true;
-//                        $b = 0;
-//                        $a++;
-//                    }
-//                }
-//                $i ++;
-//            }
-            $pole = [];
             while(!empty($sections[$i])){
-                array_push($pole,$sections[$i]->getId());
+                $data = $this->getDoctrine()->getRepository("CoreBundle:User")->findAllByFilter($filter, $sections[$i]->getId(), $userRole);
+                if($i == 0){
+                    $result = $data;
+                }else{
+                    $a = 0;
+                    $b = 0;
+                    $c = true;
+                    while(!empty($data[$a])){
+                        while(!empty($result[$b])){
+                            if($data[$a]->getId() == $result[$b]->getId()){
+                                $c = false;
+                                break;
+                            }
+                            $b++;
+                        }
+                        if($c == true){
+                            array_push($result, $data[$a]);
+                        }
+                        $c = true;
+                        $b = 0;
+                        $a++;
+                    }
+                }
                 $i ++;
             }
-            var_dump($pole);
 
-            $result = $this->getDoctrine()->getRepository("CoreBundle:User")->findAllByFilter($filter, $pole, $userRole);
 
         }
 

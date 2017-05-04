@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: Nikolas
- * Date: 03.05.2017
- * Time: 18:42
+ * Date: 04.05.2017
+ * Time: 19:19
  */
 
 namespace ApiBundle\Command;
@@ -12,38 +12,45 @@ namespace ApiBundle\Command;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class UpdateRegistrationDeviceCommand extends ContainerAwareCommand
+class UpdateUserInSectionCommand extends ContainerAwareCommand
 {
+
     protected function configure()
     {
         $this
-            ->setName('api:update_terminals')
-            ->setDescription('Update terminals')
-            ->setHelp('Update terminals for user....')
-            ->addArgument('Deviceuuid', InputArgument::REQUIRED, 'Uuid of device');
+            ->setName('api:update_user')
+            ->setDescription('Update user')
+            ->setHelp('Update user in sections....')
+            ->addArgument('UserId', InputArgument::REQUIRED, 'Id of user')
+            ->addArgument('SectionId', InputArgument::REQUIRED, 'Id of section');
+
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $uuid = $input->getArgument('Deviceuuid');
+        $user_id = $input->getArgument('UserId');
+        $section_id = $input->getArgument('SectionId');
+
 
         $em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
 
-        $device = $em->getRepository("CoreBundle:Device")->findOneBy([
-            'uuid' => $uuid
-        ]);
 
+        $user = $em->getRepository("CoreBundle:User")->find($user_id);
+        $devices = $user->getDevices();
 
-        $user = $device->getUser();
+        $sections = null;
 
-        $sections = $user->getSections();
-
-//        $output->writeln("Test");
+        if($section_id == 0){
+            $sections = $user->getSections();
+            var_dump("bbbbb");
+        }else{
+            $sections = $em->getRepository("CoreBundle:Section")->find($section_id);
+            var_dump("ccc");
+        }
 
         $i = 0;
 
@@ -178,48 +185,53 @@ class UpdateRegistrationDeviceCommand extends ContainerAwareCommand
 
                 if($type->getCode() == "HYBRID")
                 {
-                    $data = [
-                        "device_uuid" => $readers[$b]->getUuid(),
-                        "username" => $user->getUsername(),
-                        "uuid" => $device->getUuid(),
-                        "private_key" => "private_key",
-                        "public_key" => $device->getPrivateKey(),
-                        "permissions" => [
-                            "allow_priority_1" => [
-                                "from" => $allow_from_1,
-                                "to" => $allow_to_1,
-                            ],
-                            "deny_priority_1" => [
-                                "from" => $deny_from_1,
-                                "to" => $deny_to_1,
-                            ],
-                            "allow_priority_2" => [
-                                "from" => $allow_from_2,
-                                "to" => $allow_to_2,
-                            ],
-                            "deny_priority_2" => [
-                                "from" => $deny_from_2,
-                                "to" => $deny_to_2,
+                    $c = 0;
+
+                    while(!empty($devices[$c])){
+
+                        $data = [
+                            "device_uuid" => $readers[$b]->getUuid(),
+                            "username" => $user->getUsername(),
+                            "uuid" => $devices[$c]->getUuid(),
+                            "private_key" => "private_key",
+                            "public_key" => $devices[$c]->getPrivateKey(),
+                            "permissions" => [
+                                "allow_priority_1" => [
+                                    "from" => $allow_from_1,
+                                    "to" => $allow_to_1,
+                                ],
+                                "deny_priority_1" => [
+                                    "from" => $deny_from_1,
+                                    "to" => $deny_to_1,
+                                ],
+                                "allow_priority_2" => [
+                                    "from" => $allow_from_2,
+                                    "to" => $allow_to_2,
+                                ],
+                                "deny_priority_2" => [
+                                    "from" => $deny_from_2,
+                                    "to" => $deny_to_2,
+                                ]
+
+
                             ]
+                        ];
 
+                        $client = new Client(['verify' => false]);
+                        try {
+                            $client->request('POST', $readers[$b]->getIpAddress(),
 
-                        ]
-                    ];
+                                ['json' => $data]
+                            );
+                        } catch (ConnectException $e) {
 
-                    $client = new Client(['verify' => false]);
-                    try {
-                        $client->request('POST', $readers[$b]->getIpAddress(),
+                        }
 
-                            ['json' => $data]
-                        );
-                    } catch (ConnectException $e) {
-
-//                    var_dump( Psr7\str($e->getRequest()) );
-////                    echo Psr7\str($e->getRequest());
-//                    var_dump("----------------------------------------------------------------");
-////                    var_dump( Psr7\str($e->getResponse()) );
+                        $c ++;
 
                     }
+
+
 
 
                 }
@@ -232,6 +244,5 @@ class UpdateRegistrationDeviceCommand extends ContainerAwareCommand
 
 
     }
-
 
 }

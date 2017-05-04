@@ -24,6 +24,7 @@
 
     <div class="btn-group-vertical">
         <a class="btn btn-default glyphicon glyphicon-hand-left" style="margin-bottom: 20%" href="{{ relative_path('/dashboard') }}" > Späť</a>
+        <a class="btn btn-default " style="margin-bottom: 20%" href="{{ path('updateReadersOnUserchange', {'id_user': user.id, 'id_section': 0}) }}" > Aktualizovať</a>
     </div>
 
 </div>
@@ -50,6 +51,8 @@
                         <a class="btn btn-default btn-xs" href="{{ path('viewUserTimeEntries', {'id_user': user.id, 'id_section': section.id}) }}" >Vybrať</a>
                         <a class="btn btn-default btn-xs" href="{{ path('addUserTimeConcreteEntry', {'id_user': user.id, 'id_section': section.id}) }}" >Konkrétny prístup</a>
                         <a class="btn btn-default btn-xs" href="{{ path('addUserTimeEveryEntry', {'id_user': user.id, 'id_section': section.id}) }}" >Všeobecný prístup</a>
+                        <a class="btn btn-default btn-xs" href="{{ path('updateReadersOnUserchange', {'id_user': user.id, 'id_section': section.id}) }}" > Aktualizovať</a>
+    </div>
 
                     </td>
 

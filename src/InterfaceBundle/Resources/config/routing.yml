@@ -250,6 +250,14 @@ updateOfflineReader:
     requirements:
               id_reader:                       \d+
 
+updateReadersOnUserchange:
+    path:         /section/{id_section}/user/{id_user}/update
+    defaults:     { _controller: "InterfaceBundle:User:updateReadersUser"}
+    requirements:
+          id_section:                       \d+
+          id_user:                          \d+
+
+
 
 
 
