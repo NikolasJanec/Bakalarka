@@ -46,10 +46,12 @@ class UpdateUserInSectionCommand extends ContainerAwareCommand
 
         if($section_id == 0){
             $sections = $user->getSections();
-            var_dump("bbbbb");
+
         }else{
-            $sections = $em->getRepository("CoreBundle:Section")->find($section_id);
-            var_dump("ccc");
+            $sections = $em->getRepository("CoreBundle:Section")->findBy([
+                'id' => $section_id
+            ]);
+
         }
 
         $i = 0;

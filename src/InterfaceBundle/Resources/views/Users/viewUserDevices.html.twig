@@ -36,24 +36,23 @@
 
     <table class="table table-hover table-striped">
         <tr>
-            <th>Označenie čítačky</th>
-            <th>Sekcia</th>
-            <th>Status</th>
-            <th>Dátum</th>
+            <th>Označenie zariadenia</th>
+            <th>uuid</th>
+            <th>Dátum registrácie</th>
+            <th>Akcia</th>
         </tr>
 
-        {% for log in user.logs %}
-            {% if log.activity == "Prístup" %}
-                <tr>
-                    <td>{{ log.deviceReader.name }}</td>
-                    <td>{{ log.section.name }}</td>
-                    <td>{{ log.status }}</td>
-                    <td>{{ log.createdAt2 }}</td>
-                    {#<td>#}
-                    {#<a class="btn btn-default btn-xs" href="#" >Zobraziť</a>#}
-                    {#</td>#}
-                </tr>
-            {% endif %}
+        {% for device in devices %}
+
+            <tr>
+                <td>{{ device.name }}</td>
+                <td>{{ device.uuid }}</td>
+                <td>{{ device.createdAt2 }}</td>
+                <td>
+                <a class="btn btn-default btn-xs" href="{{ path('deleteUserDevice',{ 'id_user': user.id, 'id_device': device.id}) }}" >Odstrániť</a>
+                </td>
+            </tr>
+
         {% endfor %}
     </table>
 </div>

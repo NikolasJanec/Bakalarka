@@ -37,6 +37,11 @@ class RegistrationUserController extends Controller
             $user->setFirstName($object['first_name']);
             $user->setLastName($object['last_name']);
             $user->setUserName($object['username']);
+            $user->setEmail($object['email']);
+            $user->setPassword($object['password']);
+            $password = $this->get('security.password_encoder')
+                ->encodePassword($user, $user->getPassword());
+            $user->setPassword($password);
             $user->setRole($this->getDoctrine()->getRepository("CoreBundle:Role")->findOneBy([
                 'id' => 2
             ]));

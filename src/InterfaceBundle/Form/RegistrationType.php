@@ -16,6 +16,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -46,17 +48,19 @@ class RegistrationType extends AbstractType
             ->add('lastName', TextType::class,[
                 'required' => true,
                 'label' => "Priezvisko",
-                'attr' => [
-                    'style' => 'color: red;'
-                ]
             ])
             ->add('userName', TextType::class,[
                 'required' => true,
-                'label' => "UserName"
+                'label' => "Používateľské meno"
             ])
-//            ->add('sections', ChoiceType::class, [
-//                'entry_type' => SectionType::class,
-//            ])
+            ->add('email', EmailType::class, [
+                'required' => true,
+                'label' => "Email"
+            ])
+            ->add('password', PasswordType::class,[
+                'required' => true,
+                'label' => "Heslo"
+            ])
             ->add('sections', ChoiceType::class,
                 [
                     'choices' => $section_names

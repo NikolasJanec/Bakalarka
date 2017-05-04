@@ -16,8 +16,9 @@
     </div>
 </div>
 
-<div class="col-md-3 col-md-offset-1 pad">
+<div class="col-md-4 col-md-offset-1 pad">
     <a class="btn btn-default " href="{{ path('viewUserEntries', {'id_user': user.id}) }}" >Prístupy</a>
     <a class="btn btn-default " href="{{ path('viewUserSections', {'id_user': user.id}) }}" >Sekcie</a>
     <a class="btn btn-default " href="{{ path('viewUserTimeEntries', {'id_user': user.id, 'id_section': 0}) }}" >Nastavenia časových prístupov</a>
+    <a class="btn btn-default " href="{{ path('viewUserDevices', {'id_user': user.id}) }}" >Zariadenia</a>
 </div>

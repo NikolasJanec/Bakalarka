@@ -26,6 +26,9 @@ class Device extends ApiEntity
 
     private $uuid;
 
+    /**
+     * @var \DateTime
+     */
     private $createdAt;
 
     private $updatedAt;
@@ -161,6 +164,14 @@ class Device extends ApiEntity
     public function fillUpdatedAt()
     {
         $this->updatedAt = new \DateTime();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt2()
+    {
+        return $this->createdAt->format('Y-m-d H:i:s');
     }
 
     /**

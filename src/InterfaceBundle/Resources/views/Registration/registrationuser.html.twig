@@ -83,6 +83,8 @@ form_theme form
                     obj["username"] = $("#registration_userName").val();
                     obj["last_name"] = $("#registration_lastName").val();
                     obj["first_name"] = $("#registration_firstName").val();
+                    obj["email"] = $("#registration_email").val();
+                    obj["password"] = $("#registration_password").val();
                     obj["section"] = $("#registration_sections option:selected").text();
                     obj["profile"] = $("#profile_selection option:selected").val();
 
@@ -97,7 +99,7 @@ form_theme form
                         success: function(response)
                         {
 
-                            alert(JSON.stringify(response));
+                           // alert(JSON.stringify(response));
 
                         }
                     });

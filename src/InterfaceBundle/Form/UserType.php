@@ -14,6 +14,8 @@ namespace InterfaceBundle\Form;
 use CoreBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -36,7 +38,15 @@ class UserType extends AbstractType
             ])
             ->add('userName', TextType::class,[
                 'required' => true,
-                'label' => "UserName"
+                'label' => "Používateľské meno"
+            ])
+            ->add('email', EmailType::class, [
+                'required' => true,
+                'label' => "Email"
+            ])
+            ->add('password', PasswordType::class,[
+                'required' => true,
+                'label' => "Heslo"
             ])
 
             ->add('sections', CollectionType::class,array(

@@ -145,6 +145,19 @@ viewUserSections:
     requirements:
           id_user:                       \d+
 
+viewUserDevices:
+    path:         /user/{id_user}/devices
+    defaults:     { _controller: "InterfaceBundle:User:viewUserDevices"}
+    requirements:
+          id_user:                       \d+
+
+deleteUserDevice:
+    path:         /user/{id_user}/devices/{id_device}/delete
+    defaults:     { _controller: "InterfaceBundle:User:deleteUserDevice"}
+    requirements:
+          id_user:                       \d+
+          id_device:                      \d+
+
 addUserSections:
     path:         /user/{id_user}/section/{id_section}/profile/{id_profile}{id_action}
     defaults:     { _controller: "InterfaceBundle:User:addUserSection"}

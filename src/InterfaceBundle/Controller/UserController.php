@@ -173,7 +173,7 @@ class UserController extends Controller
             $em->persist($user);
             $em->flush();
             $specific = 1;
-//            $sections = $this->getDoctrine()->getRepository("CoreBundle:Section")->findAllSectionsForUser($id_user, $me->getId());
+            shell_exec(sprintf("nohup php %s/../bin/console api:update_user %s %s &",$this->get('kernel')->getRootDir(), $id_user, $id_section));
         }
 
         $i = 0;
@@ -408,6 +408,24 @@ class UserController extends Controller
 
     }
 
+    public function deleteUserDeviceAction($id_device, $id_user)
+    {
+        $device= $this->getDoctrine()->getRepository("CoreBundle:Device")->find($id_device);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($device);
+        $em->flush();
+
+        $user = $this->getDoctrine()->getRepository("CoreBundle:User")->find($id_user);
+        $devices = $user->getDevices();
+
+        return $this->render('@Interface/Users/viewUserDevices.html.twig',array(
+            'devices' => $devices,
+            'user' => $user
+        ));
+
+    }
+
     public function viewSectionUserAction(Request $request, $id_user, $id_section){
 
         $user = $this->getDoctrine()->getRepository("CoreBundle:User")->find($id_user);
@@ -464,6 +482,17 @@ class UserController extends Controller
 
         ));
 
+
+    }
+
+    public function viewUserDevicesAction($id_user){
+        $user = $this->getDoctrine()->getRepository("CoreBundle:User")->find($id_user);
+        $devices = $user->getDevices();
+
+        return $this->render('@Interface/Users/viewUserDevices.html.twig',array(
+           'devices' => $devices,
+            'user' => $user
+        ));
 
     }
 
