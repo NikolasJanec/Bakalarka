@@ -253,14 +253,15 @@ class DeviceReaderController extends Controller
 
                 $client = new Client(['verify' => false]);
                 try {
-                    $client->request('POST', $reader->getIpAddress(),
+                    $url= "http://".$reader->getIpAddress().":".$reader->getPortNumber()."/posts";
+                    $client->request('POST', $url,
 
                         ['json' => $data]
                     );
                 } catch (ConnectException $e) {
-                    var_dump( Psr7\str($e->getRequest()) );
-//                    echo Psr7\str($e->getRequest());
-                    var_dump("----------------------------------------------------------------");
+//                    var_dump( Psr7\str($e->getRequest()) );
+////                    echo Psr7\str($e->getRequest());
+//                    var_dump("----------------------------------------------------------------");
 //                    var_dump( Psr7\str($e->getResponse()) );
                     if($e->getResponse() == null){
                         return $this->render('@Interface/ReaderDevice/viewReader.html.twig', [

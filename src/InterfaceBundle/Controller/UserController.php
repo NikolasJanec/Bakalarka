@@ -12,6 +12,8 @@ namespace InterfaceBundle\Controller;
 use ApiBundle\Helper\Guid;
 use CoreBundle\Entity\Entry;
 use CoreBundle\Entity\User;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ConnectException;
 use InterfaceBundle\Form\TimeTableConcreteDayType;
 use InterfaceBundle\Form\TimeTableEveryDayType;
 use InterfaceBundle\Form\UserType;
@@ -412,6 +414,50 @@ class UserController extends Controller
     {
         $device= $this->getDoctrine()->getRepository("CoreBundle:Device")->find($id_device);
 
+        $user = $device->getUser();
+        $sections = $user->getSections();
+
+        $i = 0;
+
+        while (!empty($sections[$i])) {
+
+
+            $readers = $sections[$i]->getDeviceReaders();
+            $b = 0;
+            while (!empty($readers[$b])) {
+
+                $type = $readers[$b]->getTypeReader();
+
+                if($type->getCode() == "HYBRID")
+                {
+
+                    $data = [
+                        "device_uuid" => $readers[$b]->getUuid(),
+                        "uuid" => $device->getUuid(),
+
+                    ];
+
+                    $client = new Client(['verify' => false]);
+                    try {
+
+                        $url= "http://".$readers[$b]->getIpAddress().":".$readers[$b]->getPortNumber()."/posts";
+
+                        $client->request('POST', $url,
+
+                            ['json' => $data]
+                        );
+                    } catch (ConnectException $e) {
+
+                    }
+
+
+                }
+                $b ++;
+
+            }
+            $i ++;
+
+        }
         $em = $this->getDoctrine()->getManager();
         $em->remove($device);
         $em->flush();

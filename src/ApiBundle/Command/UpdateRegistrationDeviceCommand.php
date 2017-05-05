@@ -208,7 +208,8 @@ class UpdateRegistrationDeviceCommand extends ContainerAwareCommand
 
                     $client = new Client(['verify' => false]);
                     try {
-                        $client->request('POST', $readers[$b]->getIpAddress(),
+                        $url= "http://".$readers[$b]->getIpAddress().":".$readers[$b]->getPortNumber()."/posts";
+                        $client->request('POST', $url,
 
                             ['json' => $data]
                         );

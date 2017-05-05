@@ -189,4 +189,38 @@ class ProfileController extends Controller
 
        ));
     }
+
+    public function updateProfileAction($id_section, $id_profile)
+    {
+
+
+        shell_exec(sprintf("nohup php %s/../bin/console api:update_profile %s &",$this->get('kernel')->getRootDir(), $id_profile));
+
+
+        $profile = $this->getDoctrine()->getRepository("CoreBundle:Profile")->find($id_profile);
+
+        $entries = $profile->getEntrys();
+
+        $entriesEveryDay = [];
+        $entriesSpecificDay = [];
+
+        $i = 0;
+        while(!empty($entries[$i])){
+            if($entries[$i]->getYear() != null){
+                array_push($entriesSpecificDay,$entries[$i] );
+            }else{
+                array_push($entriesEveryDay,$entries[$i] );
+            }
+            $i ++;
+        }
+
+        return $this->render('@Interface/Profile/viewProfileInSection.html.twig', array(
+            'id_section' => $id_section,
+            'id_profile' => $id_profile,
+            'spec_entries' => $entriesSpecificDay,
+            'eve_entries' => $entriesEveryDay
+
+        ));
+
+    }
 }

@@ -18,9 +18,18 @@ class LogController extends Controller
 
         $logs = $this->getDoctrine()->getRepository("CoreBundle:Log")->findAll();
 
+        $me = $this->getUser();
+
+        $sections = $me->getSections();
+
         return $this->render('@Interface/Logs/viewLogs.html.twig', array(
-            'logs' => $logs
+            'logs' => $logs,
+            'sections' => $sections,
+            'thisSection' => 0
         ));
     }
+
+
+
 
 }

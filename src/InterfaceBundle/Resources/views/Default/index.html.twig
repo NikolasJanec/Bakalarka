@@ -21,6 +21,14 @@
 
 {{ include('@Interface/_layout/navbar.html.twig') }}
 
+<div class="col-md-1 pad ">
+
+    <div class="btn-group-vertical">
+        <a class="btn btn-default" href="{{ relative_path('/registration')}}">Registrácia</a>
+    </div>
+
+</div>
+
 
 
     <form method="POST">
@@ -37,11 +45,11 @@
     <div class="col-md-10 col-md-offset-1">
         <table class="table table-hover table-condensed">
             <tr>
-                <th>First_Name</th>
-                <th>Last_Name</th>
-                <th>Username</th>
-                <th>Date_Reg</th>
-                <th>Action</th>
+                <th>Meno</th>
+                <th>Priezvisko</th>
+                <th>Používateľské meno</th>
+                <th>Dátum registrácie</th>
+                <th>Akcia</th>
             </tr>
 
             {% for user in users %}

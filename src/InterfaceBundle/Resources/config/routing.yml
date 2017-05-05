@@ -235,6 +235,14 @@ viewSectionProfile:
           id_section:                       \d+
           id_profile:                        \d+
 
+updateSectionProfile:
+    path:         /section/{id_section}/profile/{id_profile}/update
+    defaults:     { _controller: "InterfaceBundle:Profile:updateProfile"}
+    requirements:
+          id_section:                       \d+
+          id_profile:                        \d+
+
+
 addProfileTimeSpecEntry:
     path:         /section/{id_section}/profile/{id_profile}/adds
     defaults:     { _controller: "InterfaceBundle:Profile:addProfileTimeSpecEntry"}

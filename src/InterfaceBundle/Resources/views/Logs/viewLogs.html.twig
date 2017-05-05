@@ -23,6 +23,16 @@
 
 {{ include('@Interface/_layout/navbar.html.twig') }}
 
+<div class="col-md-1 pad ">
+
+    <div class="btn-group-vertical ">
+       {% for section in sections %}
+           <a class="btn btn-default " style="margin-bottom: 10%" href="#" > {{ section.name }} </a>
+        {% endfor %}
+    </div>
+
+</div>
+
 <form method="POST">
     <div class="input-group col-md-10 col-md-offset-1 pad">
         <input type="text" class="form-control" placeholder="Search" name="sec_name" id="srch-term">
@@ -33,7 +43,7 @@
 </form>
 
 
-<div class="col-md-10 col-md-offset-1 ">
+<div class="col-md-10  ">
     <table class="table table-hover table-striped">
         <tr>
             <th class="text-center">Administrator</th>
