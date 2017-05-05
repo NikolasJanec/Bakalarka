@@ -21,3 +21,12 @@ apiCheckEntry:
     methods:                    [POST]
     requirements:
       id:                       \d+
+
+apiCreateLog:
+    path:                       /terminal/{id}/log
+    defaults:                   { _controller: ApiBundle:Log:create }
+    methods:                    [POST]
+    requirements:
+      id:                       \d+
+
+

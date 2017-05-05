@@ -209,10 +209,51 @@ class UserController extends Controller
         $section = $this->getDoctrine()->getRepository("CoreBundle:Section")->find($id_section);
         $profile = $this->getDoctrine()->getRepository("CoreBundle:Profile")->find($id_profile);
         $user = $this->getDoctrine()->getRepository("CoreBundle:User")->find($id_user);
-
+        $devices = $user->getDevices();
         if ($id_profile != 0){
             $user->removeProfile($profile);
         }
+
+
+
+
+            $readers = $section->getDeviceReaders();
+            $b = 0;
+            while (!empty($readers[$b])) {
+
+                $type = $readers[$b]->getTypeReader();
+
+                if($type->getCode() == "HYBRID")
+                {
+                   $i = 0;
+                   while (!empty($devices[$i])){
+                       $data = [
+                           "device_uuid" => $readers[$b]->getUuid(),
+                           "uuid" => $devices[$i]->getUuid(),
+
+                       ];
+
+                       $client = new Client(['verify' => false]);
+                       try {
+
+                           $url= "http://".$readers[$b]->getIpAddress().":".$readers[$b]->getPortNumber()."/v1/delete";
+
+                           $client->request('POST', $url,
+
+                               ['json' => $data]
+                           );
+                       } catch (ConnectException $e) {
+
+                       }
+
+                   }
+
+                }
+                $b ++;
+
+            }
+
+
         $user->removeSection($section);
         $em = $this->getDoctrine()->getManager();
         $em->persist($user);
@@ -224,6 +265,8 @@ class UserController extends Controller
 
         $i = 0;
         $result = [];
+
+
 
         while(!empty($sections[$i])){
             $pom = [];
@@ -440,7 +483,7 @@ class UserController extends Controller
                     $client = new Client(['verify' => false]);
                     try {
 
-                        $url= "http://".$readers[$b]->getIpAddress().":".$readers[$b]->getPortNumber()."/posts";
+                        $url= "http://".$readers[$b]->getIpAddress().":".$readers[$b]->getPortNumber()."/v1/delete";
 
                         $client->request('POST', $url,
 

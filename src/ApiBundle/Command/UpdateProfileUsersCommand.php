@@ -211,7 +211,7 @@ class UpdateProfileUsersCommand extends ContainerAwareCommand
 
                         $client = new Client(['verify' => false]);
                         try {
-                            $url= "http://".$readers[$b]->getIpAddress().":".$readers[$b]->getPortNumber()."/posts";
+                            $url= "http://".$readers[$b]->getIpAddress().":".$readers[$b]->getPortNumber()."/v1/posts";
                             $client->request('POST', $url,
 
                                 ['json' => $data]

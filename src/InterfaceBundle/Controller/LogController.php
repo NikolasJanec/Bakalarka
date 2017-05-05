@@ -25,7 +25,22 @@ class LogController extends Controller
         return $this->render('@Interface/Logs/viewLogs.html.twig', array(
             'logs' => $logs,
             'sections' => $sections,
-            'thisSection' => 0
+        ));
+    }
+
+    public function viewLogsInSectionAction($id_section)
+    {
+        $logs = $this->getDoctrine()->getRepository("CoreBundle:Log")->findBy([
+            'sectionId' =>$id_section
+        ]);
+
+        $me = $this->getUser();
+
+        $sections = $me->getSections();
+
+        return $this->render('@Interface/Logs/viewLogs.html.twig', array(
+            'logs' => $logs,
+            'sections' => $sections,
         ));
     }
 

@@ -22,12 +22,21 @@
 <body>
 
 {{ include('@Interface/_layout/navbar.html.twig') }}
+{#<div class="">#}
+
+    {#<div class=" col-md-offset-5 ">#}
+        {#<a class="btn btn-default "  href="#" > Administrátori </a>#}
+        {#<a class="btn btn-default " href="#" > Užívatelia </a>#}
+        {#<a class="btn btn-default "  href="#" > Čítačky </a>#}
+    {#</div>#}
+
+{#</div>#}
 
 <div class="col-md-1 pad ">
 
     <div class="btn-group-vertical ">
        {% for section in sections %}
-           <a class="btn btn-default " style="margin-bottom: 10%" href="#" > {{ section.name }} </a>
+           <a class="btn btn-default " style="margin-bottom: 10%" href="{{ path('viewLogsInSection', {'id_section': section.id} ) }}" > {{ section.name }} </a>
         {% endfor %}
     </div>
 

@@ -278,6 +278,12 @@ updateReadersOnUserchange:
           id_section:                       \d+
           id_user:                          \d+
 
+viewLogsInSection:
+    path:         /logs/section/{id_section}
+    defaults:     { _controller: "InterfaceBundle:Log:viewLogsInSection"}
+    requirements:
+          id_section:                       \d+
+
 
 
 
