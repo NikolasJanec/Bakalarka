@@ -1,7 +1,3 @@
-apiListUsers:
-    path:                       /user
-    defaults:                   { _controller: ApiBundle:User:list }
-    methods:                    [GET]
 
 apiCreateTerminal:
     path:                       /terminal

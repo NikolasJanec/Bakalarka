@@ -17,7 +17,10 @@ class DefaultController extends Controller
         $userRole = $this->getDoctrine()->getRepository("CoreBundle:Role")->findOneBy([
             'code' => "ROLE_USER"
         ]);
+
         $userRole = $userRole->getId();
+
+
 
         if ($request->getMethod() == Request::METHOD_POST)
         {

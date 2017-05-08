@@ -228,7 +228,7 @@ class DeviceReaderController extends Controller
                     "username" => $users[$i]->getUsername(),
                     "uuid" => $mobiledevices[$b]->getUuid(),
                     "private_key" => "private_key",
-                    "public_key" => $mobiledevices[$b]->getPrivateKey(),
+                    "public_key" => $mobiledevices[$b]->getPublicKey(),
                     "permissions" => [
                         "allow_priority_1" => [
                             "from" => $allow_from_1,
@@ -253,7 +253,7 @@ class DeviceReaderController extends Controller
 
                 $client = new Client(['verify' => false]);
                 try {
-                    $url= "http://".$reader->getIpAddress().":".$reader->getPortNumber()."/posts";
+                    $url= "https://".$reader->getIpAddress().":".$reader->getPortNumber()."/v1/add_or_update";
                     $client->request('POST', $url,
 
                         ['json' => $data]

@@ -35,24 +35,7 @@ class UserSectionType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
-//        $builder
-//            ->add('name', ChoiceType::class,[
-//                'required' => true,
-//                'label' => "Sekcia",
-//                'choices' => array(
-//                    'Pondelok' => 1,
-//                    'Utorok' => 2,
-//                    'Streda' => 3,
-//                    'Stvrtok' => 4,
-//                    'Piatok' => 5,
-//                    'Sobota' => 6,
-//                    'Nedela' => 7
-//
-//
-//                )
-//            ]);
-        // grab the user, do a quick sanity check that one exists
+        //este nie je implementovane problem convert object to string
         $user = $this->tokenStorage->getToken()->getUser()->getSections();
 
         if (!$user) {
@@ -77,9 +60,9 @@ class UserSectionType extends AbstractType
 //                    'choice_label'  => 'name',
 //                    'query_builder' => function (EntityRepository $er) use ($user) {
 //                        // build a custom query
-////                        $er->createQueryBuilder('u')->addOrderBy('sec_name', 'DESC');
-////
-////                         return $er;
+//                        $er->createQueryBuilder('u')->addOrderBy('sec_name', 'DESC');
+//
+//                         return $er;
 //
 //                        // or call a method on your repository that returns the query builder
 //                        // the $er is an instance of your UserRepository

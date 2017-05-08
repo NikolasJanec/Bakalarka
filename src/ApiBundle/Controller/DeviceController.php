@@ -10,6 +10,7 @@ namespace ApiBundle\Controller;
 use ApiBundle\Helper\Guid;
 use CoreBundle\Entity\ApiEntity;
 use CoreBundle\Entity\Device;
+use CoreBundle\Entity\Log;
 use CoreBundle\Entity\User;
 use Doctrine\ORM\Id\UuidGenerator;
 use phpseclib\Crypt\RSA;
@@ -27,57 +28,77 @@ class DeviceController extends Controller
         $data = json_decode($request->getContent(),true);
         if(!(empty($data))) {
             $terminal = $this->getDoctrine()->getRepository("CoreBundle:DeviceReader")->find($id);
-            if ($terminal->getUuid() != $data['uuid']){
-                return new  JsonResponse('Bad device reader',Response::HTTP_BAD_REQUEST);
-            }
-            $user = $this->getDoctrine()->getRepository("CoreBundle:User")->findOneBy([
-                'userName' => $data['username']
-            ]);
+            if(!empty($terminal)){
+                if ($terminal->getUuid() != $data['uuid']){
+                    return new  JsonResponse('Bad uuid terminal',Response::HTTP_BAD_REQUEST);
+                }
+                $user = $this->getDoctrine()->getRepository("CoreBundle:User")->findOneBy([
+                    'userName' => $data['username']
+                ]);
                 if (!$user){
-                    return new  JsonResponse('User do not exist',Response::HTTP_BAD_REQUEST);
+                    return new  JsonResponse('User not exist',Response::HTTP_BAD_REQUEST);
+                }
+                $section = $terminal->getSection();
+                $mySections = $user->getSections();
+                $i = 0;
+                $a = 0;
+                while (!empty($mySections[$i])){
+                    if($mySections[$i]->getName() == $section->getName()){
+                        $a = 1;
+                        break;
+                    }
+                    $i ++;
+                }
+                if($a == 1){
+                    $device = new Device();
+                    $device->setUuid(Guid::uuid());
+                    $device->setName("mobilne zariadenie");
+                    $rsa = new RSA();
+                    $key = $rsa->createKey();
+                    $device->setPublicKey($key['publickey']);
+                    $device->setPrivateKey($key['privatekey']);
+                    $device->setUser($this->getDoctrine()->getRepository("CoreBundle:User")->findOneBy([
+                        'userName' => $data['username']
+                    ]));
+                    $device->fillCreatedAt();
+                    $device->fillUpdatedAt();
+
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($device);
+                    $em->flush();
+
+                    $log = new Log();
+                    $log->setSection($section);
+                    $log->setDeviceReader($terminal);
+                    $log->setUser($user);
+                    $log->setDevice($device);
+                    $log->fillCreatedAt();
+                    $log->fillUpdatedAt();
+                    $log->setStatus("True");
+                    $log->setActivity("Zaregistroval");
+
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($log);
+                    $em->flush();
+
+                    $result = [
+                        'username' => $data['username'],
+                        'device_uuid' => $device->getUuid(),
+                        'device_private_key' => $device->getPrivateKey()
+                    ];
+
+                    shell_exec(sprintf("nohup php %s/../bin/console api:update_terminals %s &",$this->get('kernel')->getRootDir(), $device->getUuid()));
+
+                    return new JsonResponse($result, Response::HTTP_CREATED);
+                }else{
+                    return new  JsonResponse('The user does not have permission to register the device in this section',Response::HTTP_BAD_REQUEST);
                 }
 
-                $device = new Device();
-                $device->setUuid(Guid::uuid());
-                $device->setName("mobilne zariadenie");
-                $rsa = new RSA();
-                $key = $rsa->createKey();
-                $device->setPublicKey($key['publickey']);
-                $device->setPrivateKey($key['privatekey']);
-                $device->setUser($this->getDoctrine()->getRepository("CoreBundle:User")->findOneBy([
-                    'userName' => $data['username']
-                ]));
-                $device->fillCreatedAt();
-                $device->fillUpdatedAt();
+            }else{
+                return new  JsonResponse('Terminal not exist',Response::HTTP_BAD_REQUEST);
+            }
 
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($device);
-                $em->flush();
-
-                $result = [
-                    'username' => $data['username'],
-                    'device_uuid' => $device->getUuid(),
-                    'device_private_key' => $device->getPrivateKey()
-                ];
-
-
-                shell_exec(sprintf("nohup php %s/../bin/console api:update_terminals %s &",$this->get('kernel')->getRootDir(), $device->getUuid()));
-
-
-
-//                $process->start();
-
-//                while ($process->isRunning())
-//                {
-//
-//                }
-////
-//                var_dump($process->getOutput());
-//                var_dump($process->getErrorOutput());
-
-                return new JsonResponse($result, Response::HTTP_CREATED);
-        }
-        else{
+        }else{
             return new  JsonResponse('Bad request',Response::HTTP_BAD_REQUEST);
         }
     }

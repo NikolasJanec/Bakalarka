@@ -49,7 +49,7 @@ class EntryController extends Controller
                      */
                     $userHaveSection = $this->getDoctrine()->getRepository("CoreBundle:Section")->findSection($user->getId(), $section->getId());
                     //echo($userHaveSection[0]);
-                    if($userHaveSection[0]->getId() == $section->getId()){
+                    if(!empty($userHaveSection[0])){
                         $entries1 = $this->getDoctrine()->getRepository("CoreBundle:Entry")->findBy([
                             'userId' => $user->getId(),
                             'sectionId' => $section->getId()
@@ -64,11 +64,13 @@ class EntryController extends Controller
                                 if ($entries1[$i]->getMonth() == date('m') || $entries1[$i]->getDayOfMonth() == null ){
                                     if ($entries1[$i]->getDayOfMonth() == date('t') || $entries1[$i]->getDayOfMonth() == null ){
                                         if ($entries1[$i]->getDayOfWeek() == date('N') || $entries1[$i]->getDayOfWeek() == null){
-                                            if ($entries1[$i]->getFrom() <= date("H:i:s") && $entries1[$i]->getUntil() >= date("H:i:s")){
+                                            if ($entries1[$i]->getFrom2() <= date("H:i:s") && $entries1[$i]->getUntil2() >= date("H:i:s")){
                                                 $status = $entries1[$i]->getIsActive();
                                                 $publickey = $device->getPublicKey();
                                                 $log->setEntry($entries1[$i]);
+
                                                 break;
+
                                             }
                                         }
                                     }
@@ -108,8 +110,6 @@ class EntryController extends Controller
 
                         }
 
-
-
                         $log->setSection($section);
                         $log->setDeviceReader($terminal);
                         $log->setUser($user);
@@ -128,17 +128,17 @@ class EntryController extends Controller
                             'uuid' => $data['uuid'],
                             'uuid_device' => $data['uuid_device'],
                             'status' => $status,
-                            'public_key' => $publickey,
+                            'public_key' => $publickey
 
                         ];
 
                         return new JsonResponse($result, Response::HTTP_OK);
 
                     }else{
-                        return new  JsonResponse('Wrong3333 json',Response::HTTP_BAD_REQUEST);
+                        return new  JsonResponse('The user does not have permission to entry in this section',Response::HTTP_BAD_REQUEST);
                     }
                 }else{
-                    return new  JsonResponse('Wrong222 json',Response::HTTP_BAD_REQUEST);
+                    return new  JsonResponse('Bad device uuid',Response::HTTP_BAD_REQUEST);
                 }
             }
 

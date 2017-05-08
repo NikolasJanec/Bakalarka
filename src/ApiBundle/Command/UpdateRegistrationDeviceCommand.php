@@ -183,7 +183,7 @@ class UpdateRegistrationDeviceCommand extends ContainerAwareCommand
                         "username" => $user->getUsername(),
                         "uuid" => $device->getUuid(),
                         "private_key" => "private_key",
-                        "public_key" => $device->getPrivateKey(),
+                        "public_key" => $device->getPublicKey(),
                         "permissions" => [
                             "allow_priority_1" => [
                                 "from" => $allow_from_1,
@@ -208,7 +208,7 @@ class UpdateRegistrationDeviceCommand extends ContainerAwareCommand
 
                     $client = new Client(['verify' => false]);
                     try {
-                        $url= "http://".$readers[$b]->getIpAddress().":".$readers[$b]->getPortNumber()."/v1/posts";
+                        $url= "https://".$readers[$b]->getIpAddress().":".$readers[$b]->getPortNumber()."/v1/add_or_update";
                         $client->request('POST', $url,
 
                             ['json' => $data]

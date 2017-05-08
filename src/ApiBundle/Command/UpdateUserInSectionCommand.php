@@ -196,7 +196,7 @@ class UpdateUserInSectionCommand extends ContainerAwareCommand
                             "username" => $user->getUsername(),
                             "uuid" => $devices[$c]->getUuid(),
                             "private_key" => "private_key",
-                            "public_key" => $devices[$c]->getPrivateKey(),
+                            "public_key" => $devices[$c]->getPublicKey(),
                             "permissions" => [
                                 "allow_priority_1" => [
                                     "from" => $allow_from_1,
@@ -221,7 +221,7 @@ class UpdateUserInSectionCommand extends ContainerAwareCommand
 
                         $client = new Client(['verify' => false]);
                         try {
-                            $url= "http://".$readers[$b]->getIpAddress().":".$readers[$b]->getPortNumber()."/v1/posts";
+                            $url= "https://".$readers[$b]->getIpAddress().":".$readers[$b]->getPortNumber()."/v1/add_or_update";
                             $client->request('POST', $url,
 
                                 ['json' => $data]

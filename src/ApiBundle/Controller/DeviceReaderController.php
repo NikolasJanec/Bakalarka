@@ -10,6 +10,7 @@ namespace ApiBundle\Controller;
 
 use ApiBundle\Helper\Guid;
 use CoreBundle\Entity\DeviceReader;
+use CoreBundle\Entity\Log;
 use CoreBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,58 +30,84 @@ class DeviceReaderController extends Controller
             $admin = $this->getDoctrine()->getRepository("CoreBundle:User")->findOneBy([
                 'userName' => $admin_name
             ]);
-            $admin_pass = $data['password'];
-            $sec_name = $data['section_name'];
-            $section = $this->getDoctrine()->getRepository("CoreBundle:Section")->findOneBy([
-                'name' => $sec_name
-            ]);
-            $terminal = new DeviceReader();
-            $terminal->setSection($section);
-            $terminal->setIpAddress($data['ip_address']);
-            $terminal->setPortNumber($data['port']);
-            $terminal->setName($data['name']);
-            $terminal->setUuid(Guid::uuid());
-            $password = $this->get('security.password_encoder')
-                ->encodePassword($admin, $admin_pass);
+            if(!empty($admin)){
+                $admin_pass = $data['password'];
 
-            if($password == $admin->getPassword()){
-                $terminal->setToken('aaaaa');
+                if(password_verify($admin_pass,$admin->getPassword())){
+                    $sec_name = $data['section_name'];
+                    $section = $this->getDoctrine()->getRepository("CoreBundle:Section")->findOneBy([
+                        'name' => $sec_name
+                    ]);
+
+                    if(!empty($section)){
+                        $mySections = $admin->getSections();
+                        $i = 0;
+                        $a = 0;
+                        while (!empty($mySections[$i])){
+                            if($mySections[$i]->getName() == $section->getName()){
+                            $a = 1;
+                            break;
+                            }
+                            $i ++;
+                        }
+                        if($a == 1){
+                            $terminal = new DeviceReader();
+                            $terminal->setSection($section);
+                            $terminal->setIpAddress($data['ip_address']);
+                            $terminal->setPortNumber($data['port']);
+                            $terminal->setName($data['name']);
+                            $terminal->setUuid(Guid::uuid());
+
+                            $terminal->setTypeReader($this->getDoctrine()->getRepository("CoreBundle:TypeReader")->findOneBy([
+                                'id' => $data['mode']
+                            ]));
+                            $terminal->fillCreatedAt();
+                            $terminal->fillUpdatedAt();
+
+                            $em = $this->getDoctrine()->getManager();
+                            $em->persist($terminal);
+                            $em->flush();
+
+                            $log = new Log();
+                            $log->setSection($section);
+                            $log->setDeviceReader($terminal);
+                            $log->setAdministrator($admin);
+                            $log->fillCreatedAt();
+                            $log->fillUpdatedAt();
+                            $log->setStatus("True");
+                            $log->setActivity("Vytvoril");
+
+                            $em = $this->getDoctrine()->getManager();
+                            $em->persist($log);
+                            $em->flush();
+
+                            $terminal->setToken($terminal->getId());
+                            $em->persist($terminal);
+                            $em->flush();
+                            $result = [
+                                'token' => $terminal->getToken(),
+                                'uuid' => $terminal->getUuid()
+                            ];
+                            return new JsonResponse($result, Response::HTTP_CREATED);
+                        }else{
+                            return new  JsonResponse('You do not have this section in mind',Response::HTTP_BAD_REQUEST);
+                        }
+
+                    }else{
+                        return new  JsonResponse('Wrong section name',Response::HTTP_BAD_REQUEST);
+                    }
+
+                }else{
+                    return new  JsonResponse('Wrong password',Response::HTTP_BAD_REQUEST);
+                }
+
             }else{
-                $terminal->setToken('bbbb');
+                return new  JsonResponse('Wrong Administrator name',Response::HTTP_BAD_REQUEST);
             }
 
-            $terminal->setTypeReader($this->getDoctrine()->getRepository("CoreBundle:TypeReader")->findOneBy([
-                'id' => $data['mode']
-            ]));
-            $terminal->fillCreatedAt();
-            $terminal->fillUpdatedAt();
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($terminal);
-            $em->flush();
-            $result = [
-                'token' => $terminal->getId(),
-                'uuid' => $terminal->getUuid()
-            ];
-            return new JsonResponse($result, Response::HTTP_CREATED);
-        }
-        else{
+        }else{
             return new  JsonResponse('Bad request',Response::HTTP_BAD_REQUEST);
         }
-
-    }
-
-    public function listAction(Request $request)
-    {
-        //$users = $this->getDoctrine()->getRepository("CoreBundle:User")->findAll();
-
-        $result = [
-
-            'metadata' => "ochjojoj",
-            'uuid' => Guid::uuid()
-         ];
-
-        return new JsonResponse($result, Response::HTTP_OK);
     }
 
 
