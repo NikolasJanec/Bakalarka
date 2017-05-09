@@ -49,3 +49,4 @@ security:
         - { path: ^/logs, roles: ROLE_ADMIN }
         - { path: ^/section, roles: ROLE_ADMIN }
         - { path: ^/registration, roles: ROLE_ADMIN }
+        - { path: ^/updatereader, roles: ROLE_ADMIN }

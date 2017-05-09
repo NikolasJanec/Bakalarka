@@ -254,7 +254,7 @@ class DeviceReaderController extends Controller
                 $client = new Client(['verify' => false, 'http_errors' => false]);
                 try {
                     $url= "https://".$reader->getIpAddress().":".$reader->getPortNumber()."/v1/add_or_update";
-//                    $url = "http://192.168.56.10:3000/posts";
+//                    $url = "http://192.168.56.1:3000/posts";
                     $client->request('POST', $url,
 
                         ['json' => $data]

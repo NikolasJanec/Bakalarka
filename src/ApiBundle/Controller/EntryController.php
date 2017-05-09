@@ -66,7 +66,9 @@ class EntryController extends Controller
                                         if ($entries1[$i]->getDayOfWeek() == date('N') || $entries1[$i]->getDayOfWeek() == null){
                                             if ($entries1[$i]->getFrom2() <= date("H:i:s") && $entries1[$i]->getUntil2() >= date("H:i:s")){
                                                 $status = $entries1[$i]->getIsActive();
-                                                $publickey = $device->getPublicKey();
+                                                if($status == true) {
+                                                    $publickey = $device->getPublicKey();
+                                                }
                                                 $log->setEntry($entries1[$i]);
 
                                                 break;
@@ -79,7 +81,7 @@ class EntryController extends Controller
                             $i ++;
                         }
 
-                        if ($publickey == null){
+                        if ($publickey == null && $status != 0){
 
                             $concreteProfile = $this->getDoctrine()->getRepository("CoreBundle:Profile")->findOneProfile($section->getId(), $user->getId());
 
@@ -96,7 +98,10 @@ class EntryController extends Controller
                                                     $p1 = "ccc";
                                                     if ($entries2[$i]->getFrom2() <= date("H:i:s") && $entries2[$i]->getUntil2() >= date("H:i:s")){
                                                         $status = $entries2[$i]->getIsActive();
-                                                        $publickey = $device->getPublicKey();
+                                                        if($status == true){
+                                                            $publickey = $device->getPublicKey();
+                                                        }
+
                                                         $log->setEntry($entries2[$i]);
                                                         break;
                                                     }
@@ -116,7 +121,11 @@ class EntryController extends Controller
                         $log->setDevice($device);
                         $log->fillCreatedAt();
                         $log->fillUpdatedAt();
-                        $log->setStatus("True");
+                        if ($publickey == null || $status == false ){
+                            $log->setStatus("False");
+                        }else{
+                            $log->setStatus("True");
+                        }
                         $log->setActivity("Prístup");
 
                         $em = $this->getDoctrine()->getManager();
