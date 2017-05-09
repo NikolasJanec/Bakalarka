@@ -33,41 +33,50 @@ class RegistrationUserController extends Controller
 
             $object = json_decode($request->getContent(),true);
 
-            $user = new User;
-            $user->setFirstName($object['first_name']);
-            $user->setLastName($object['last_name']);
-            $user->setUserName($object['username']);
-            $user->setEmail($object['email']);
-            $user->setPassword($object['password']);
-            $password = $this->get('security.password_encoder')
-                ->encodePassword($user, $user->getPassword());
-            $user->setPassword($password);
-            $user->setRole($this->getDoctrine()->getRepository("CoreBundle:Role")->findOneBy([
-                'id' => 2
-            ]));
-            $user->setUuid(Guid::uuid());
-            $user->fillUpdatedAt();
-            $user->fillCreatedAt();
-
-            $section = $this->getDoctrine()->getRepository("CoreBundle:Section")->findOneBy([
-                'name' => $object['section']
+            $pom = $this->getDoctrine()->getRepository("CoreBundle:User")->findOneBy([
+                'userName' => $object['username']
             ]);
 
-            $user->addSection($section);
+            if(!empty($pom)){
+                return new JsonResponse(array('data' => "Používateľ s daným username už existuje"));
+            }else{
+                $user = new User;
+                $user->setFirstName($object['first_name']);
+                $user->setLastName($object['last_name']);
+                $user->setUserName($object['username']);
+                $user->setEmail($object['email']);
+                $user->setPassword($object['password']);
+                $password = $this->get('security.password_encoder')
+                    ->encodePassword($user, $user->getPassword());
+                $user->setPassword($password);
+                $user->setRole($this->getDoctrine()->getRepository("CoreBundle:Role")->findOneBy([
+                    'id' => 2
+                ]));
+                $user->setUuid(Guid::uuid());
+                $user->fillUpdatedAt();
+                $user->fillCreatedAt();
 
-            $profile = $this->getDoctrine()->getRepository("CoreBundle:Profile")->find($object['profile']);
-            $user->addProfile($profile);
+                $section = $this->getDoctrine()->getRepository("CoreBundle:Section")->findOneBy([
+                    'name' => $object['section']
+                ]);
 
-            $em->persist($user);
-            $em->flush();
+                $user->addSection($section);
 
-            $log = new Log();
-            $log->setUser($user);
-            $log->setSection($section);
+                $profile = $this->getDoctrine()->getRepository("CoreBundle:Profile")->find($object['profile']);
+                $user->addProfile($profile);
+
+                $em->persist($user);
+                $em->flush();
+
+                $log = new Log();
+                $log->setUser($user);
+                $log->setSection($section);
 
 
 
-            return new JsonResponse(array('data' => $object));
+                return new JsonResponse(array('data' => "Používateľ úspešne zaregistrovaný"));
+            }
+
         }
 
         return new Response('OK', 100);

@@ -48,3 +48,4 @@ security:
         - { path: ^/reader, roles: ROLE_ADMIN }
         - { path: ^/logs, roles: ROLE_ADMIN }
         - { path: ^/section, roles: ROLE_ADMIN }
+        - { path: ^/registration, roles: ROLE_ADMIN }

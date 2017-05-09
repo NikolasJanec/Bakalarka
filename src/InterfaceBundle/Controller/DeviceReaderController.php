@@ -251,25 +251,17 @@ class DeviceReaderController extends Controller
                     ]
                 ];
 
-                $client = new Client(['verify' => false]);
+                $client = new Client(['verify' => false, 'http_errors' => false]);
                 try {
                     $url= "https://".$reader->getIpAddress().":".$reader->getPortNumber()."/v1/add_or_update";
+//                    $url = "http://192.168.56.10:3000/posts";
                     $client->request('POST', $url,
 
                         ['json' => $data]
                     );
                 } catch (ConnectException $e) {
-//                    var_dump( Psr7\str($e->getRequest()) );
-////                    echo Psr7\str($e->getRequest());
-//                    var_dump("----------------------------------------------------------------");
-//                    var_dump( Psr7\str($e->getResponse()) );
-                    if($e->getResponse() == null){
-                        return $this->render('@Interface/ReaderDevice/viewReader.html.twig', [
-                            'deviceReader' => $reader,
-                            'pom_error' => "Nepodarilo sa aktualizovat"
-                        ]);
 
-                    }
+
 
                 }
 

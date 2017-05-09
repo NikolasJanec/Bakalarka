@@ -480,11 +480,11 @@ class UserController extends Controller
 
                     ];
 
-                    $client = new Client(['verify' => false]);
+                    $client = new Client(['verify' => false, 'http_errors' => false]);
                     try {
 
                         $url= "https://".$readers[$b]->getIpAddress().":".$readers[$b]->getPortNumber()."/v1/delete";
-
+//                        $url= "http://".$readers[$b]->getIpAddress().":".$readers[$b]->getPortNumber()."/posts";
                         $client->request('POST', $url,
 
                             ['json' => $data]

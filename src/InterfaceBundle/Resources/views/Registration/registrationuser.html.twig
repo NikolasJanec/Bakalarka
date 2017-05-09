@@ -6,105 +6,106 @@ form_theme form
 <!DOCTYPE html>
 <html lang="en">
 <head>
-{{ include('@Interface/_layout/skeleton.html.twig') }}
+    {{ include('@Interface/_layout/skeleton.html.twig') }}
 </head>
 
 <body>
 
-    {{ include('@Interface/_layout/navbar.html.twig') }}
+{{ include('@Interface/_layout/navbar.html.twig') }}
+
+
+<div class="row">
+    <div class="col-lg-6 col-lg-offset-3">
 
 
 
-    <div class="row">
-        <div class="col-lg-6 col-lg-offset-3">
+        {{ form_start(form) }}
 
 
+        {{ form_end(form) }}
 
-            {{ form_start(form) }}
-
-            {{ form_end(form) }}
-
-            <script>
-                var $form = $("form");
-                var selection = $("#registration_sections");
-                $profiles = "<div id='profiles' class='form-group'></div>";
+        <script>
+            var $form = $("form");
+            var selection = $("#registration_sections");
+            $profiles = "<div id='profiles' class='form-group'></div>";
 
 
-                $("#registration_save").parent().before($profiles);
+            $("#registration_save").parent().before($profiles);
 
-                $("#registration_save").click(function(e){
-                    e.preventDefault();
+            $("#registration_save").click(function(e){
+                e.preventDefault();
 
-                    var obj = {}
-                    obj["username"] = $("#registration_userName").val();
-                    obj["last_name"] = $("#registration_lastName").val();
-                    obj["first_name"] = $("#registration_firstName").val();
-                    obj["email"] = $("#registration_email").val();
-                    obj["password"] = $("#registration_password").val();
-                    obj["section"] = $("#registration_sections option:selected").text();
-                    obj["profile"] = $("#profile_selection option:selected").val();
+                var obj = {}
+                obj["username"] = $("#registration_userName").val();
+                obj["last_name"] = $("#registration_lastName").val();
+                obj["first_name"] = $("#registration_firstName").val();
+                obj["email"] = $("#registration_email").val();
+                obj["password"] = $("#registration_password").val();
+                obj["section"] = $("#registration_sections option:selected").text();
+                obj["profile"] = $("#profile_selection option:selected").val();
 
-                    var data = JSON.stringify(obj);
-                    $.ajax
-                    ({
-                        url: "https://bakalarka.server.dev/registration/register",
-                        type: $form.attr('method'),
-                        data: data,
-                        dataType: "json",
-                        contentType: "application/json; charset=utf-8",
-                        success: function(response)
-                        {
+                var data = JSON.stringify(obj);
+                $.ajax
+                ({
+                    url: "https://bakalarka.server.dev/registration/register",
+                    type: $form.attr('method'),
+                    data: data,
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function(response)
+                    {
 
-                           // alert(JSON.stringify(response));
+                        alert(JSON.stringify(response['data']));
 
-                        }
-                    });
-
+                    }
                 });
 
-                $(selection).change(function(){
+            });
 
-                    var section_name  = $(this).val();
+            $(selection).change(function(){
+
+                var section_name  = $(this).val();
 
 
-                    var obj = {name : section_name};
+                var obj = {name : section_name};
 
-                    var data = JSON.stringify(obj);
+                var data = JSON.stringify(obj);
 
-                    $.ajax({
-                        url : "https://bakalarka.server.dev/registration/profiles",
-                        type: $form.attr('method'),
-                        data : data,
-                        dataType : "json",
-                        contentType: "application/json; charset=utf-8",
+                $.ajax({
+                    url : "https://bakalarka.server.dev/registration/profiles",
+                    type: $form.attr('method'),
+                    data : data,
+                    dataType : "json",
+                    contentType: "application/json; charset=utf-8",
 
-                        success: function(response) {
-                            var selectValues = response['data'];
+                    success: function(response) {
+                        var selectValues = response['data'];
 
-                            var label = '<label class="control-label required" for="profile_selection">Profiles</label>';
-                            var select = "<select id='profile_selection' class='form-control'></select>";
-                            var choice = $(select);
-                            var choice_label = $(label);
+                        var label = '<label class="control-label required" for="profile_selection">Profiles</label>';
+                        var select = "<select id='profile_selection' class='form-control'></select>";
+                        var choice = $(select);
+                        var choice_label = $(label);
 
-                            $.each(selectValues, function(key, value) {
-                                $(choice)
-                                    .append($("<option></option>")
-                                        .attr("value",value['id'])
-                                        .text(value['name']));
-                            });
+                        $.each(selectValues, function(key, value) {
+                            $(choice)
+                                .append($("<option></option>")
+                                    .attr("value",value['id'])
+                                    .text(value['name']));
+                        });
 
-                            $("#profiles").html(choice_label).append(choice);
-                        }
-                    });
-
+                        $("#profiles").html(choice_label).append(choice);
+                    }
                 });
 
-            </script>
+            });
 
 
-        </div>
+
+
+        </script>
+
+
     </div>
+</div>
 
 </body>
-
-

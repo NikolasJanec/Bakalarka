@@ -58,10 +58,11 @@ class RemoveUserDeviceCommand extends ContainerAwareCommand
 
                     ];
 
-                    $client = new Client(['verify' => false]);
+                    $client = new Client(['verify' => false, 'http_errors' => false]);
                     try {
 
-                        $url= "http://".$readers[$b]->getIpAddress().":".$readers[$b]->getPortNumber()."/posts";
+                        $url= "https://".$readers[$b]->getIpAddress().":".$readers[$b]->getPortNumber()."/v1/delete";
+                        //                    $url = "http://192.168.56.10:3000/posts";
 
                         $client->request('POST', $url,
 
